@@ -40,4 +40,3 @@ ex) # 엄청 큰 글씨
 **bold**
 ~~strikethrough~~
 
-c
