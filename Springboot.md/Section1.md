@@ -23,7 +23,7 @@ Gradle은 의존관계가 있는 라이브러리를 함께 다운로드 한다
     ● assertj : 테스트 코드를 좀 더 편하게 작성하게 도와주는 라이브러리
     ● spring-test : 스프링 통합 테스트 지원
 ```
-
+---
 ### View 환경설정
 #### Welcome Page 만들기
 ``` html
@@ -75,4 +75,18 @@ public class HelloController{
 실행 : http://localhost:8080/hello   
 
 동작 환경 그림
-![](C:\Users\User\Desktop\배경\스프링부트.JPG)
+![](https://velog.velcdn.com/images/junsj119/post/8f5938a4-b7e4-46a2-963b-7084f4486366/image.png)   
+
+● 컨트롤러에서 리턴 값으로 문자를 반환하면 뷰 리졸버`('viewResolver')`가 화면을 찾아서 처리한다.   
+● 스프링 부트 탬플릿엔진 기본 viewName 매핑   
+● `resources:temlates/`+{ViewName}+`'.html'`
+
+> 참고 : `spring-boot-devtools`라이브러리를 추가하면,`html`파일을 컴파일만 해주면 서버 재시작 없이 View파일 변경이  가능하다.   
+> 인텔리J컴파일 방법 : 메뉴 build → Recompile
+---
+**빌드하고 실행하기**   
+콘솔로 이동   
+1. `./gradlew build`   
+2. `cd build/libs`   
+3. `java -jar hello-spring-0.0.1-SNAPSHOT.jar`   
+4. 실행확인
