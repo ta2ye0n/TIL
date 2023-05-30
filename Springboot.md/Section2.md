@@ -71,10 +71,11 @@ public class HelloController{
 ```
 ● `'@ResponseBody'`를 사용하면 뷰 리졸버`('viewReslover')`를 사용하지 않음   
 ● HTTP의 BODY에 문자 내용을 직접 반환(HTML BODY TAG를 말하는 것이 아님)   
+
 **실행**   
 ● http://localhost:8080/hello-api?name=spring   
 
-@ResponseBody 사용원리
+@ResponseBody 사용원리   
 ![](https://blog.kakaocdn.net/dn/uoFSH/btrg1JPyimy/pm2rm72xLdXR4Iv66IsJCK/img.png)
 
 ● `@ResponseBody`를 사용      

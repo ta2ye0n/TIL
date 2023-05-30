@@ -32,7 +32,7 @@ public class MemberController {
 Consider defining a bean of type 'hello.hellospring.service.MemberService' in your configuration.
 ```
 
-memberService가 스프링 빈으로 등록외어 있지 않다.
+memberService가 스프링 빈으로 등록되어 있지 않다.
 ![](https://user-images.githubusercontent.com/47733530/162397447-8b17bc65-a3c9-4107-a7ca-1a784669c6e4.png)
 > 참고 : helloController는 스프링이 제공하는 컨트롤러여서 스프링 빈으로 자동 등록된다.   
 >`@Controller`가 있으면 자동 등록됨

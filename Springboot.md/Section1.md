@@ -72,9 +72,11 @@ public class HelloController{
 </html>
 ```
 **thymelaf 템플릿엔젠 동작 확인**   
-실행 : http://localhost:8080/hello   
 
-동작 환경 그림
+**실행**   
+- http://localhost:8080/hello   
+
+동작 환경 그림   
 ![](https://velog.velcdn.com/images/junsj119/post/8f5938a4-b7e4-46a2-963b-7084f4486366/image.png)   
 
 ● 컨트롤러에서 리턴 값으로 문자를 반환하면 뷰 리졸버`('viewResolver')`가 화면을 찾아서 처리한다.   
