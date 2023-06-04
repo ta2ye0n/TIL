@@ -55,4 +55,73 @@ class Test{
 }
 
 ** 다만 char 형 배열은 예왼인데, 문자같은 경우 println 으로 바로 출력이 가능
+```   
+
+**배열 복사**   
 ```
+배열은 한번 선언되고 나면 공간 자체를 직접 늘릴수는 없기 때문에 간접적인 방법으로 배열을 확장해야 됨 
+따로 공간이 큰 배열을 새로 만드렁 주고 기존의 배열의 내용을 새로 만든 배열에 복사하는 식으로 하여 배열을 간접적으로 확장하는 방법
+다만, 이러한 작업은 비용이 많이 들기 때문에 처음부터 배열의 길이를 넉넉하게 잡는 것이 베스트
+```
+방법   
+● for 문으로 순회해 직접 한땀 한땀 복사하도록 지정   
+● 자바에서 제공해주는 `System.arraycopy()`메서드나 `Arrays.compyOf()`메서드를 사용   
+>Arrays.copyOf는 System.arraycopy를 래핑한 함수일뿐임 
+즉, 둘이 동일하다고 보면됨
+다만 Arrays.copyOf 가 좀더 직관적이라 이쪽이 더 많이 사용되는 편   
+``` java
+import java.util.Arrays;
+
+class Test{
+	public static void main(String[] args) {
+        int[] arr1 = {10, 20, 30, 40, 50};
+
+		int[] arr2 = new int[arr1.length * 2]; // 우선 초기 배열보다 길이가 두배인 새로운 배열을 선언
+        
+        // 루프문으로 순회하여 복사
+        for(int i = 0 ; i < arr1.length ; i++) { // arr1의 길이만큼 반복문 실행	
+            arr2[i] = arr1[i];	// arr1배열의 원소값을 순회하며 arr2배열에 저장
+        }
+        arr1 = arr2; // 원래의 배열을 가리키고있던 참조변수 arr1이 새로 복사된 arr2 배열을 가리키도록 한다.
+	}
+}
+```   
+``` java
+class Test{
+	public static void main(String[] args) {
+        int[] arr1 = {10, 20, 30, 40, 50};
+
+        int[] arr2 = new int[arr1.length * 2]; // 우선 초기 배열보다 길이가 두배인 새로운 배열을 선언
+
+        // System.arraycopy() 메서드 사용
+        System.arraycopy(arr1, 0, arr2, 0, arr1.length); // arr1의 index 0부터 arr1.length 전체 길이 만큼 arr2의 index 0 부터 붙여넣는다.
+        /*
+        - 첫번째 인자 : 복사할 배열
+        - 두번째 인자 : 복사를 시작할 배열의 위치
+        - 세번째 인자 : 붙여넣을 배열
+        - 네번째 인자 : 복사된 배열값들이 붙여질 시작위치 (차례대로 붙여 넣어진다)
+        - 다섯번째 인자 : 지정된 길이만큼 값들이 복사된다.
+        */
+	}
+}
+```
+``` java
+import java.util.Arrays;
+
+class Test{
+	public static void main(String[] args) {
+        int[] arr1 = {10, 20, 30, 40, 50};
+
+        int[] arr2 = new int[arr1.length * 2]; // 우선 초기 배열보다 길이가 두배인 새로운 배열을 선언
+
+		// Array.copyOf() 메서드 사용     
+        arr2 = Arrays.copyOf(arr1, arr1.length); // arr1 배열을 arr1.length 전체 길이만큼 전체 복사해서 arr2에 할당
+        System.out.println(Arrays.toString(arr2)); // [10, 20, 30, 40, 50]
+        
+        arr2 = Arrays.copyOfRange(arr1, 1, 3); // 배열요소 시작점, 끝점 지정. 1, 2 만 복사해서 반환
+        System.out.println(Arrays.toString(arr2)); // [10, 20, 30, 40, 50]
+	}
+}
+Copy
+```
+> for 문 보다 메서드를 이용하는게 거의 두배 정도로 빠르게 복사한다고 함
