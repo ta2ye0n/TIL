@@ -124,4 +124,54 @@ class Test{
 }
 Copy
 ```
-> for 문 보다 메서드를 이용하는게 거의 두배 정도로 빠르게 복사한다고 함
+> for 문 보다 메서드를 이용하는게 거의 두배 정도로 빠르게 복사한다고 함   
+
+**배열 정렬**   
+```
+Arrays.sort() 메서드를 이용해 배열을 정렬할 수 있음
+
+이때 정렬된 배열을 새로 반환하는 것이 아닌, 자기 자신 배열을 정렬시킴
+```
+``` java
+import java.util.Arrays;
+
+class Test{
+	public static void main(String[] args) {
+        int[] arr = { 3,2,0,1,4 };
+
+        // 오름차순 정렬
+        Arrays.sort(arr); // 자기 자신 배열을 정렬 시킴 (정렬된 배열을 반환하는 것이 아니다)
+        System.out.println(Arrays.toString(arr)); // [0,1,2,3,4]
+
+        // 내림차순 정렬 
+        Arrays.sort(arr, Collections.reverseOrder()); // 배열을 내림차순으로 정렬할 때는 Collections 클래스의 reverseOrder() 함수를 사용
+        System.out.println(Arrays.toString(arr)); // [4,3,2,1,0]
+
+        // 배열 일부부만 정렬
+        int[] arr = { 3,2,0,1,4 };
+        Arrays.sort(arr, 0, 3); // 배열 요소 0, 1, 2 만 정렬
+        System.out.println(Arrays.toString(arr)); // [0, 2, 3, 1, 4]
+	}
+}
+```
+
+**배열 비교**    
+```  
+만일 두개의 배열의 구성이 같은지 같지 않은지 비교하기 위해서 일일히 for문으로 순화하여 원소를 비교하는 식으로도 구현을 할 수 있지만,
+Arrays.equals() 메서드를 이용하면 간단히 처리 할 수 있음
+```
+``` java
+ import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        String[] arr1 = { "홍길동", "임꺽정", "박혁거세", "주몽", "고담덕" };
+        String[] arr2 = { "홍길동", "임꺽정", "박혁거세", "주몽", "고담덕" };
+        String[] arr3 = { "홍길동", "임꺽정", "박혁거세", "주몽" };
+
+        System.out.println("arr1 == arr2 : " + Arrays.equals(arr1, arr2)); // arr1 == arr2 : true
+        
+        System.out.println("arr1 == arr3 : " + Arrays.equals(arr1, arr3)); // arr1 == arr3 : false
+    }
+}
+```  
