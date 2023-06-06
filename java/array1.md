@@ -122,7 +122,6 @@ class Test{
         System.out.println(Arrays.toString(arr2)); // [10, 20, 30, 40, 50]
 	}
 }
-Copy
 ```
 > for 문 보다 메서드를 이용하는게 거의 두배 정도로 빠르게 복사한다고 함   
 
