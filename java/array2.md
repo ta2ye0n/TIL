@@ -97,3 +97,57 @@ public class Main {
     }
 }
 ```
+---
+### 배열 종류
+**가변 배열**   
+```
+2차원 배열이 테이블 형태라고 해서 반드시 가로와 세로가 똑같은 정방 행렬일 필요가 없음
+자바에서의 다차원 배열은 마지막 차수의 길이를 다르게 지정할 수 있기 때문에, 각 요소로 들어가는 1차원 배열의 길이를 각기 다르게 해도 2차원 배열 데이터를 생성하는데 문제 없음
+```
+ex)
+``` java
+int[][] score = {
+	{100, 100, 100, 100},
+    {20, 20, 20},
+    {30, 30},
+    {40, 40},
+    {50, 50, 50}
+}
+```   
+**객체 배열**   
+```
+보통 배열에 정수나 문자를 적재하여 꺼내 써왔을 것인데, 객체 자체도 배열에 넣어 사용할 수 있음
+객체 역시 하나의 자료형으로 취급
+``` 
+``` java
+// myObject 클래스
+class myObject{
+    int id;
+    String description;
+
+    myObject(int id, String description) {
+        this.id = id;
+        this.description = description;
+    }
+}
+
+// myObject 클래스를 담을 수 있는 공간 3개 크기의 객체 배열 생성
+myObject[] arrayObj = new myObject[3];
+
+// 객체 배열 초기화
+arrayObj[0] = new myObject(101, "first");
+arrayObj[1] = new myObject(102, "second");
+arrayObj[2] = new myObject(103, "third");
+
+// 객체 배열 사용
+System.out.println(arrayObj[0].description); // "first  array, John"
+
+/* ************************************ */
+
+// 객체 배열 선언 + 초기화 한번에
+myObject[] arrayObj2 = {
+    new myObject(101, "first"), 
+    new myObject(101, "second"), 
+    new myObject(101, "third")
+};
+```
