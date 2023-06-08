@@ -151,3 +151,8 @@ myObject[] arrayObj2 = {
     new myObject(101, "third")
 };
 ```
+**객체배열 복사**   
+```
+기본 타입의 배열일 경우 Arrays.copyOf 나 Arrays.copyOfRange 메서드를 통하여 간단하게 배열 복사가 가능
+객체로 이루어진 배열도 마찬가지로 가능하지만, 배열자체는 복사가 되지만 배열 내용물 객체는 참조 복사(주소복사)가 되기 때문
+```
