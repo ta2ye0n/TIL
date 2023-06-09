@@ -155,4 +155,66 @@ myObject[] arrayObj2 = {
 ```
 기본 타입의 배열일 경우 Arrays.copyOf 나 Arrays.copyOfRange 메서드를 통하여 간단하게 배열 복사가 가능
 객체로 이루어진 배열도 마찬가지로 가능하지만, 배열자체는 복사가 되지만 배열 내용물 객체는 참조 복사(주소복사)가 되기 때문
+
+즉, 배열 내용물은 여전히 같은 객체 주소를 가리키기 때문에 객체도 복사 되었는 줄 알고 복사한 객체의 멤버를 변경하면 복사되 멤버에 객체도 변경되는 꼴이 됨
+```
+``` java
+class myObject{
+    int id;
+    String description;
+
+    myObject(int id, String description) {
+        this.id = id;
+        this.description = description;
+    }
+}
+
+myObject[] arrayObj = {
+    new myObject(101, "first"), 
+    new myObject(101, "second"), 
+    new myObject(101, "third")
+};
+System.out.println(Arrays.toString(arrayObj)); // [main$1myObject@251a69d7, main$1myObject@7344699f, main$1myObject@6b95977]
+
+myObject[] arrayObj2; // 복사할 배열
+
+arrayObj2 = arrayObj.clone(); // 배열을 복사해도 내용물 객체의 주소는 똑같다.
+System.out.println(Arrays.toString(arrayObj2)); // [main$1myObject@251a69d7, main$1myObject@7344699f, main$1myObject@6b95977]
+
+System.out.println(arrayObj[0].id); // 101
+arrayObj2[0].id = 999; // 복사한 arrayObj2의 첫째 객체의 멤버를 변경
+System.out.println(arrayObj2[0].id); // 999
+System.out.println(arrayObj[0].id); // 999 : arrayObj1 의 첫째 겍체의 멤버도 변경됨
+```
+따라서 완전한 깊은 복사를 하기 위해서는 어쩔수 없이 for 문으로 수동으로 해줘야 함
+``` java
+class myObject{
+    int id;
+    String description;
+
+    myObject(int id, String description) {
+        this.id = id;
+        this.description = description;
+    }
+}
+
+myObject[] arrayObj = {
+    new myObject(101, "first"), 
+    new myObject(102, "second"), 
+    new myObject(103, "third")
+};
+System.out.println(Arrays.toString(arrayObj)); // [main$1myObject@251a69d7, main$1myObject@7344699f, main$1myObject@6b95977]
+
+myObject[] arrayObj2 = new myObject[3];
+for(int i = 0; i < arrayObj.length; i++) {
+    arrayObj2[i] = new myObject(arrayObj[i].id, arrayObj[i].description);
+}
+
+// 배열 내용물 객체의 @주소가 달라짐을 볼 수 있다.
+System.out.println(Arrays.toString(arrayObj2)); // [main$1myObject@7e9e5f8a, main$1myObject@8bcc55f, main$1myObject@58644d46]
+
+System.out.println(arrayObj[0].id); // 101
+arrayObj2[0].id = 999; // 복사한 arrayObj2의 첫째 객체의 멤버를 변경
+System.out.println(arrayObj2[0].id); // 999
+System.out.println(arrayObj[0].id); // 101
 ```
