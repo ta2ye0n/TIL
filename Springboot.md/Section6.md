@@ -51,9 +51,21 @@ implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 runtimeOnly 'com.h2database:h2'
 ```
 
-스프링 부트 데이터베이스 연결 설정 추가
+스프링 부트 데이터베이스 연결 설정 추가   
 `resources/application.properties`
-```
-spring.datasource.url=jdbc:h2:tcp://localhost/~/test
+``` java
+spring.datasource.url=jdbc:h2:tcp: //localhost/~/test
 spring.datasource.driver-class-name=org.h2.Driver
 ```
+Jdbc 리포지토리 구현   
+
+구현 클래스 추가 이미지   
+![](https://user-images.githubusercontent.com/67407678/110061765-78882500-7dab-11eb-8640-67369eb579bc.PNG)   
+
+스프링 설정 이미지         
+![](https://blog.kakaocdn.net/dn/rrceF/btqF3GVIhtQ/JA9JAZ9MH3ZAolR9PM2gS1/img.png)   
+
+- 개방 폐쇠 원칙(OCP, Open-Closed Principle)   
+        - 확장에는 열려있고, 수정에는 닫혀있다.
+- 스프링의 DI(Dependncies Injection)을 사용하면 **기존 코드를 전혀 손대지 않고, 설정만으로 구현 클래스를 변경**할 수 있다.   
+- 데이터를 DB에 저장하므로 스프링 서버를 다시 실행해도 데이터가 안전하게 저장된다.   
