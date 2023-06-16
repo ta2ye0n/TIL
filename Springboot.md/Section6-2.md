@@ -75,3 +75,11 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
     }
 }
 ```
+---
+### JPA
+- JPA는 기존의 반복 코드는 물론이고, 기본적인 SQL도 JPA가 직접 만들어서 실행해준다   
+- JPA를 사용하면, SQL과 데이터 중심의 설계에서 객체 중심의 설계로 패러다임을 전환할 수 있다   
+- JPA를 사용하면 개발 생산성을 크게 높일 수 있다   
+
+**build.gradle파일에 JPA, h2 데이터베이스 관련 라이브러리 추가**   
+``` java
