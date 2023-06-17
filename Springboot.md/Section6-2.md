@@ -83,3 +83,28 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
 
 **build.gradle파일에 JPA, h2 데이터베이스 관련 라이브러리 추가**   
 ``` java
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+//	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'com.h2database:h2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'{
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+```
+`spring-boot-starter-data-jap`는 내부에 jdbc 관련 라이브러리를 포함한다 따라서 jdbc는 제거해도 된다   
+
+**스프링 부트에 JPA 설정 추가**   
+`resources/application.properties`
+``` java
+spring.datasource.url=jdbc:h2:tcp://localhost/~/test
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=none
+```
+- `show-sql` : JPA가 생성하는 SQL을 출력한다   
+- `ddl-auto` : JPA는 테이블을 자동으로 생성하는 기능을 제공하는데 `none`를 사용하면 해당 기능을 끈다   
+    - `creat`를 사용하면 엔티티 정보를 바탕으로 테이블도 직접 생성해준다   
