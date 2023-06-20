@@ -72,4 +72,51 @@ public class MemberService {
 ![](https://images.velog.io/images/rladuswl/post/e19f44a4-fb53-45a2-a409-d35521942a9a/%EC%BA%A1%EC%B2%98.JPG)
 
 **시간 측정 AOP 등록**   
+``` java
+package hello.hellosping.aop;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class TimeTraceAop {
+
+    @Around("execution(* hello.hellospring..*(..))")
+    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        System.out.println("START: " + joinPoint.toString());
+        try {
+            return joinPoint.proceed();
+        } finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("END: " + joinPoint.toString() + " "+ timeMs + "ms");
+        }
+    }
+}
 ```
+**해결**   
+- 회원가입, 회원 조회등 핵심 관심사항과 시간을 측정하는 공통 관심 사항을 분리한다   
+- 시간을 측정하는 로직을 별도의 공동 로직으로 만들었다   
+- 핵심 관심사항을 깔끔하게 유지할 수 있다   
+- 변경이 필요하면 이 로직만 변경하면 된다   
+- 원하는 적용 대상을 선택할 수 있다   
+
+#### 스프링의 AOP 동작 방식 설명
+
+**AOP 적용 전 의존관계**   
+![](https://velog.velcdn.com/images/z00m__in/post/2e980169-0a75-425c-af8b-f401c35365f6/image.PNG)   
+
+**AOP 적용 후 의존관계**   
+![](https://velog.velcdn.com/images/ghenmaru/post/151aceda-f145-45df-8330-e9de8110a2b6/image.png)
+
+**AOP 적용 전 전체 그림**   
+![](https://velog.velcdn.com/images%2Fsorzzzzy%2Fpost%2Ff64a4a68-8871-45a2-b459-831a57c17090%2F%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-08-16%20%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB%201.23.10.png)   
+
+**AOP 적용 후 전체 그림**   
+![](https://velog.velcdn.com/images/z00m__in/post/25c40b55-495f-430a-b662-9006a7a862cc/image.PNG)   
+
+- 실제 Proxy가 주입되는지 콘솔에 출력해서 확인하기
