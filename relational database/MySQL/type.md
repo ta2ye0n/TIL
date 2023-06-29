@@ -128,3 +128,26 @@ BINARY와 VARBINARY는 각각 CHAR와 VARCHAR과 거의 비슷하다
 BINARY(M)
 VARBINARY(M)
 ```
+
+- BLOB과 TEXT
+```
+BLOB은 Binary Large Object를 의미하며, 다양한 크기의 바이너리 데이터를 저장할 수 있는 타입이다
+저장할 수 있는 데이터의 최대 크기에 따라 TINYBLOB,BLOB,MEDIUMBLOB,LONGBLOB로 구분된다
+
+TEXT는 VARCHAR와 비슷하지만, VARCHAR와 달리 기본값을 가질 수 없다
+또한 TEXT는 BLOB와도 비슷하지만, BLOB와는 달리 문자열의 대소문자를 구분한다
+저장할 수 있는 데이터의 최대 크기에 따라 TINYTEXT, TEXT, MEBIUMTEXT, LONGTEXT로 구분된다
+```
+
+- SET
+``` SQL
+SET은 미리 정의한 집합 안의 요소 중 여러 개를 동시에 저장할 수 있는 타입이다
+SET 목록 집합은 최대 64개의 SET 데이터를 포함 할 수 있다
+
+문법
+SET('데이터값1','데이터값2',...)
+```
+---
+### 날짜와 시간 타입
+```
+My
