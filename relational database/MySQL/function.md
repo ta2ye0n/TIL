@@ -193,3 +193,68 @@ WHERE Name NOT REGEXP '^신|상$';
 |ID|Name|ReserveDate|RoomNum|
 |:----:|:----:|:----:|:----:|
 |2|최상엽|2016-02-12|918|
+
+----
+### 타입 변환(type casting)
+```
+MySQL은 비교나 검색을 수행할 때 데이터의 타입이 서로 다를 경우, 내부적으로 타입이 같아지도록 자동 변환하여 처리한다
+하지만 사용자가 명시적으로 타입을 변환할 수 있도록 다양한 연산자와 함수도 같이 제공한다
+
+1. BINARY
+2. CAST()
+3. CONVERT()
+```
+
+**1. BINARY**
+```
+BINARY 연산자는 뒤에 오는 문자열을 바이너리 문자열로 변환한다
+BINARY 연산자를 이용하면 문자가 아닌 바이트를 기준으로 하여 비교나 검색 작업을 수행할 수 있다
+```
+
+```SQL
+/*문자 'a'와 'A'를 비교하는 예제*/
+
+SELECT BINARY 'a' = 'A';
+'a' = 'A';
+
+-- 실행결과
+0
+1
+```
+예제처럼 BINARY 연산자를 이요하면, 비교하려는 문자의 바이트 값을 비교한다 따라서 문자 'a'와 'A'가 서로 다른 값으로 인식된다
+
+**2. CAST()**
+```
+CAST() 함수는 인수로 전달 받은 값을 명시된 타입으로 변환하여 반환한다
+이때 변환하고자 하는 타입을 AS 절을 이용하여 직접 명시할 수 있다
+```
+
+```SQL
+문법
+CAST(expr AS thpe)
+
+AS 절에서 사용할 수 있는 타입
+1. BINARY
+2. CHAR
+3. DATE
+4. DATETIME
+5. TIME
+6. DECIMAL
+7. JSON(MySQL 5.7.8부터 제공됨)
+8. NCHAR
+9. SIGNED [INTEGER]
+10. UNSIGNED [INTEGER]
+```
+
+3. CONVERT()
+```
+CONVERT() 함수도 CAST() 함수처럼 인수로 전달받은 값을 명시된 타입으로 변환하여 반환한다
+CONVERT() 함수는 두번째 인수로 변환하고자 하는 타입을 직접 전달할 수 있다
+```
+
+```SQL
+문법
+1. CONVERT(expr, type)
+2. CONVERT(expr USING transcoding_name)
+```
+> USING 절을 서로 다른 문자셋(character set) 간의 데이터 변환을 위해 사용된다 이때 사용할 수 있는 타입은 CAST() 함수와 같다
