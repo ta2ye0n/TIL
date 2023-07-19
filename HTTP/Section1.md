@@ -76,3 +76,27 @@ UDP
 - 정리
     - IP와 거의 같음 + PORT + 체크섬 정도만 추가
     - 애플리케이션에서 추가 작업 필요
+---
+### PORT
+```
+같은 IP 내에서 프로세스 구분
+```
+
+- 0 ~ 65535 할당 가능
+- 0 ~ 1023 : 잘 알려진 포트, 사용하지 않는 것이 좋음
+    - FTP - 20, 21
+    - TELNET - 23
+    - HTTP - 80
+    - HTTPS - 443
+---
+### DNS
+```
+도메인 네임 시스템(Domain Name System)
+```
+- 전화번호부
+- 도메인 명을 IP 주소로 변환
+
+- DNS 사용   
+![](https://mblogthumb-phinf.pstatic.net/MjAyMjA2MjFfMTkg/MDAxNjU1Nzg1NzQwNTYx.LurwcfstEUxRHsLcU53sFaOwWLkE1fxnmUvj28S3uZYg.5ohcOc5wX3yqfkNqMejouyz_E1rzyD9e-vX8PyIvqm8g.PNG.whitesunny65/image.png?type=w800)
+
+> IP는 기억하기 어렵고 변경될수 있기 때문에 사용
