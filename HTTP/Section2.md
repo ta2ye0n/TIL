@@ -111,3 +111,24 @@ http://docs,spring.io/spring-boot/docs/current/reference/html/getting-started.ht
 - fragment
 - html 내부 북마크 등에 사용
 - 서버에 전송하는 정보 아님
+---
+### 웹 브라우저 요청 흐름
+
+1. DNS를 조회하여 IP 주소 받아오기   
+![](https://blog.kakaocdn.net/dn/VIToS/btrEjMa2icB/dvCOsBufYGYa9oTjWb79Fk/img.png)
+
+2. HTTP 요청 메시지   
+![](https://www.jaeme.dev/static/a404e86e20efb30f6d769d1460ede5d7/2108e/http_message.png)
+
+3. 해당 메세지를 Soket 라이브러리를 통해 전송계층에 전달
+4. 전송계층과 네트워크 계층에서 HTTP 메시지가 포함된 TCP/IP 패킷을 생성하고 네트워크 계층으로 보냄
+5. 네트워크 계층은 인터넷을 통해 해당 서버로 요청 메시지 전달   
+![](https://www.jaeme.dev/static/974def504cfdb8f515f6fdc1fde04fa7/2e195/tcp_http.png)
+![](https://www.jaeme.dev/static/690f4f3414ee1b09251239cf7fb27b0e/d125e/request.png)
+     > 전송데이터 = HTTP 메시지
+
+6. 서버에서 요청 패킷을 받고 응답 패킷을 전달   
+![](https://www.jaeme.dev/static/886b7c8eb5b2515aeda54342492fe868/e85cb/response_message.png)
+
+7. 웹 브라우저는 응답 패킷을 받아 해석하고 HTML 렌더링을 시킴   
+![](https://www.jaeme.dev/static/a8e17ffba40daba90b6c88b8f2b184d5/68de2/response.png)
