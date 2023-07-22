@@ -34,3 +34,20 @@ HTTP
     - 무상태 프로토콜(스테이스리스), 비연결성
     - HTTP 메시지
     - 단순함, 확장 가능
+
+---
+### 클라이언트 서버 구조
+- Request Respones 구조
+- 클라이언트는 서버에 요청을 보내고, 응답을 대기
+- 서버가 요청에 대한 결과를 만들어서 응답
+
+![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWvPggp4zgpYlZ6pWZNT-C7AxSmPazL0XeOw&usqp=CAU)
+---
+### Staeful, Stateless
+무상태 프로토콜
+```
+스테이리스(Stateless)
+```
+- 서버가 클라이언트의 상태를 보존 X
+- 장점 : 서버 확장성 높음 (스케일 아웃)
+- 단점 : 클라이언트가 추가 데이터 전송

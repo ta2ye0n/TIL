@@ -159,3 +159,27 @@ ALTER문으로 테이블에 새로운 필드를 추가하거나 수정할 때도
 ALTER TABLE 테이블이름
 DROP PRIMARY KEY
 ```
+---
+### FOREIGN KEY
+```
+FOREIGN KEY 제약 조건을 설정한 필드는 외래 키라고 부르며, 한 테이블을 다른 테이블과 연결해주는 역할을 한다
+외래 키가 설정된 테이블에 레코드를 입력하면, 기준이 되는 테이블의 내용을 참조해서 레코드가 입력된다
+즉, FOREIGN KEY 제약 조건은 하나의 테이블을 다른 테이블에 의존하게 만든다
+
+FOREIGN KEY 제약 조건을 설정할 때 참조되는 테이블의 필드는 반드시 UNIQUE나 PRIMARY KEY 제약 조건이 설정되어 있어야 한다
+```
+- CREATE 문으로 FOREIGN KEY 설정   
+CREAT문으로 테이블을 생성할 때 필드의 타입 뒤에 FOREIGN KEY를 명시하면, 해당 필드가 외래 키로 설정된다
+```SQL
+문법
+CREATE TABELE 테이블 이름
+(
+   필드이름 필드타입,
+   ...,
+   [CONSTRAINT 제약조건이름]
+   FOREIGN KEY(필드이름)
+   REFERENCES 테이블이름(필드이름)
+)
+```
+> 위의 문법을 사용하면 해당 필드에 FOREIGN KEY 제약 조건을 설정한다  
+> 이때 참조되는 테이블의 이름은 REFERENCES 키워드 다음에 명시된다
