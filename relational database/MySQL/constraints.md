@@ -231,3 +231,42 @@ FOREIGN KEY 제약 조건에 의해 참조되는 테이블에서 데이터의 �
    ```
    참조하는 테이블에 데이터가 남아 있으면, 참조되는 테이블의 데이터를 삭제하거나 수정할 수 없다
    ```
+   ---
+### DEFAULT
+```
+DEFAULT 제약 조건은 해당 필드의 기본값을 설정할 수 있게 해준다
+만약 레코드를 입력할 때 해당 필드 값을 전달하지 않으면, 자동으로 설정된 기본값을 저장한다 
+```
+- CREATE 문으로 DERAULT 설정    
+CREATE문으로 테이블을 생성할 때 해당 필드의 타입 뒤에 DEFAULT를 명시하면, 해당 필드의 기본값을 설정할 수 있다
+```SQL
+문법
+CREATE TABLE 테이블이름
+(
+   필드이름 필드타입 DERAULT 기본값,
+   ...
+)
+```
+
+- ALTER 문으로 DERAULT 설정   
+ALTER 문으로 테이블에 새로운 필드를 추가하거나 수정할 때도 DERAULT 제약 조건을 설정할 수 있다   
+테이블에 새로운 필드를 추가할 때 DEFAULT 제약 조건을 설정하는 문법
+```SQL
+ALTER TABLE 테이블이름
+ADD 필드이름 필드타입 DERAULT 기본값
+```
+
+기존 필드에 DEFAULT 제약 조건을 설정하는 문법
+```SQL
+1. ALTER TABLE 테이블이름
+   MODIFY COLUMN 필드이름 필드타입 DEFAULT 기본값
+2. ALTER TABLE 테이블이름
+   ALTER 필드이름 SET DERAULT 기본값
+```
+> 위의 두 문법은 모두 해당 필드에 DEFAULT 제약 조건을 설정한다
+
+DEFAULT 제약 조건을 삭제하는 방법
+```SQL
+ALTER TABLE 테이블이름
+ALTER 필드이름 DROP DERAULT
+```
