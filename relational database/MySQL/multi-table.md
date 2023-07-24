@@ -69,3 +69,20 @@ ON 조건
 
 RIGHT JOIN의 결과를 벤 다이어그램으로 나타낸 그림
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FyP9Wd%2Fbtq7AbPuiah%2FQQg6kdkVqfYpfWVS1Vi7lK%2Fimg.png)
+
+---
+### UNION
+```
+UNION은 여려 개의 SELECT 문의 결과를 하나의 테이블이나 결과 집합으로 표현할 때 사용한다
+이때 각각의 SELECT 문으로 선택된 필드의 개수와 타입은 모두 같아야 하며, 필드의 순서 또한 같아야 한다
+```
+SELECT 문에 UNION을 적용하는 문법
+```SQL
+SELECT 필드이름
+FROM 테이블이름
+UNION
+SELECT 필드이름
+FROM 테이블이름
+```
+
+- UNION ALL
