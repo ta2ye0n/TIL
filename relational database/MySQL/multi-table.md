@@ -86,3 +86,37 @@ FROM 테이블이름
 ```
 
 - UNION ALL
+```
+UNION은 DISTINCT 키워드를 따로 명시하지 않아도 기본적으로 중복되는 레코드를 제거한다
+따라서 이렇게 중복되는 레코드까지 모두 출력하고 싶다면, ALL 키워드를 사용해야한다
+```
+```SQL
+문법
+SELECT 필드이름
+FROM 테이블이름
+UNION ALL
+SELECT 필드이름
+FROM 테이블이름
+```
+---
+### 서브쿼리 (subquery)
+```
+서브쿼리(subquery)란 다른 쿼리 내부에 포함되어 있는 SELETE 문을 의미하낟
+서브쿼리를 포함하고 있는 쿼리를 외부쿼리(outer query)라고 부르며, 서브쿼리는 내부쿼리(inner query)라고도 부른다
+서브쿼리는 반다시 괄호(())로 감싸져 있어야만 한다
+
+MySQL에서 서브쿼리를 포함할 수 있는 외부쿼리는 SELECT, INSERT, UPDATE, DELETE, SET, DO문이 있다
+이러한 서브쿼리는 또 다시 다른 서브쿼리 안에 포함될 수 있다
+```
+
+주소가 서울인 고객이 예약한 예약 정보만을 선택하는 예제
+```SQL
+① SELECT ID, ReserveDate, RoomNum
+  FROM Reservation
+② WHERE Name IN (SELECT Name 
+               FROM Customer 
+               WHERE Address = '서울')
+```
+위의 예제에서 ①번 라인의 SELECT 문은 외부쿼리이며, ②번 라인의 SELECT 문은 서브쿼리이다   
+우선 ②번 라인의 서브쿼리가 먼저 실행되어 Customer 테이블의 Address 필드의 값이 '서울'인 레코드의 Name 필드를 모두 선택한다   
+그리고서 ①번 라인의 외부쿼리가 실행되어 Reservation 테이블에서 서브쿼리에 의해 선택된 결과 집합에 포함된 Name 필드와 일치하는 레코드만을 다시 선택한다
