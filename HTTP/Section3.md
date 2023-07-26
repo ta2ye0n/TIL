@@ -42,6 +42,7 @@ HTTP
 - 서버가 요청에 대한 결과를 만들어서 응답
 
 ![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWvPggp4zgpYlZ6pWZNT-C7AxSmPazL0XeOw&usqp=CAU)
+
 ---
 ### Staeful, Stateless
 무상태 프로토콜
@@ -118,3 +119,89 @@ HTTP
     - 로그인한 사용자의 경우 로그인 했다는 상태를 서버에 유지
     - 일반적으로 브라우저 쿠키와 서버 세션등을 사용해서 상태유지
     - 상태 유지는 최소한만 사용
+    ---
+### 비연결성(connectionless)
+- HTTP는 기본이 연결을 유지하지 않는 모델
+- 일반적으로 초 단위의 이하의 빠른 속도로 응답
+- 1시간 동안 수천명이 서비스를 사용해도 실제 서버에서 동시에 처리하는 요청은 수십개 이하로 매우 작음
+    - 예) 웹 브라우저에서 계속 연속해서 검색 버튼을 누르지는 않는다
+- 서버 자원을 매우 효율적으로 사용할 수 있음
+
+**비 연결성 한계와 극복**   
+- TCP/IP 연결을 새로 맺어야 함 - 3 way handshake 시간 추가
+- 웹 브라우저로 사이트를 요청하면 HTML 뿐만 아니라 자바스크립트, css, 추가 이미지 등등 수 많은 자원이 함께 다운로드
+- 지금은 HTTP 지속 연결(Persisitent Connections)로 문제 해결
+- HTTP/2, HTTP/3에서 더 많은 최적화
+
+HTTP 초기 - 연결, 종료 낭비   
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F37024fde-ab57-4953-9fd1-62dda7951b1f%2FUntitled.png&blockId=1fca311e-5841-45d2-8770-a9821f766e86)
+
+HTTP 지속연결 (Persisitent Connections)   
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F46a04f27-85b1-4573-931a-88e7df14c211%2FUntitled.png&blockId=318906c9-6dfc-4a2e-a813-0d08920d69ac)
+
+---
+### HTTP 메시지
+HTTP 메시지 구조
+```
+start-line 시작라인
+header헤더
+empty line 공백 라인(CRLF) '꼭 있어야함'
+message body
+```
+> 요청 메시지도 body 본문을 가질 수 있음
+
+![](https://3513843782-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/assets%2F-LxjHkZu4T9MzJ5fEMNe%2Fsync%2F47c56df395d5c565ec2721578008133ef740d318.png?generation=1617459004196561&alt=media)
+
+- HTTP 응답 메시지   
+공식 스펙
+```
+HTTP - message = start-line
+                 *(hearder-field CRLF)
+                 CRLF
+                 [message-body]
+```
+
+- 시작 라인 요청 메시지 - HTTP 메서드    
+    - 종류 : GET, POST, PUT, DELETE...
+    - 서버가 수행해야 할 동작 지정
+        - GET : 리소스 조회
+        - POST : 요청 내역 처리
+
+- 시작 라인 요청 메시지 - 요청 대상
+    - absolute-path[?query] (절대경로[?쿼리])
+    - 절대경로="/"로 시작하는 경로
+    - 참고: *,http://...?x=y 와 같이 다른 유형의 경로지정 방법도 있다
+
+- 시작라인 요청 메시지 - HTTP 버전
+    - HTTP Version
+
+- 시작라인 응답 메시지
+    - start-line = request-line / status-line
+    - starus-line = HTTP-version SP status - code SP reason-phrase CRLF
+
+- HTTP 버전
+    - HTTP 상태 코드 : 요청 성공, 실패를 나타냄
+        - 200 : 성공
+        - 400 : 클라이언트 요청 오류
+        - 500 : 서버 내부 오류
+    - 이유 문구 : 사람이 이해할 수 있는 짧은 상태 코드 설명 글
+
+- HTTP 헤더
+    - header-field = field-name":" OWS field-value OWS (OWS:띄어쓰기 허용)
+    - field-name은 대소문자 구문 없음
+
+- HTTP 헤더 용도
+    - HTTP 전송에 필요한 모든 부가 정보
+        - 예) 메시지 바디의 내용, 메시지 바디의 크기, 압축, 인증, 요청 클라이언트(브라우저)정보, 서버 애플리케이션 정보, 캐시 관리 정보
+    - 표준 헤더가 너무 많음
+    - 필요시 임의의 헤더 추가 가능
+
+- HTTP 메시지 바디 용도
+    - 실제 전송할 데이터
+    - HTML 문서, 이미지, 영상, JSON 등등 byte로 표현할 수 있는 모든 데이터 전송 가능
+
+
+> HTTP는 단순하고 확장 가능하다
+>> HTTP는 단순하다 스펙도 읽어볼만함..   
+HTTP메시지도 매우 단순   
+크게 성공하는 표준 기술은 단순하지만 확장 가능한 기술
