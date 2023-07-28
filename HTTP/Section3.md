@@ -107,7 +107,7 @@ HTTP
 ```
 ![](https://velog.velcdn.com/images/rladuswl/post/4733a75a-c4a5-437f-ac64-d0c5b5c22bfe/image.png)
 
-스케일 아웃- 수평확장 유리
+스케일 아웃- 수평확장 유리   
 ![](https://velog.velcdn.com/images/rladuswl/post/d6ee74d2-1b4e-4f1c-9f7d-cf0554ddd3ec/image.png)
 
 - Stateless 실무한계
