@@ -127,3 +127,79 @@ POST 정리
 - 예) JSON으로 조회 데이터를 넘겨야 하는데, GET 메서드를 사용하기 어려운 경우
 - 애매하면 POST
 ---
+### HTTP 메서드 - PUT,PATCH,DELETE
+PUT
+- **리소스를 대체**
+    - 리소스가 있으면 대체
+    - 리소스가 없으면 생성
+    - 쉽게 이야기해서 덮어버림
+- 중요! **클라이언트가 리소스를 식별**
+    - 클라이언트가 리소스 위치를 알고 URI 지정
+    - POST와 차이점
+
+리소스가 있는 경우   
+![](https://velog.velcdn.com/images%2Fgil0127%2Fpost%2F047edc64-0f71-4fad-b700-92d71de78e12%2F22.PNG)   
+![](https://velog.velcdn.com/images%2Fgil0127%2Fpost%2F83fc0cd5-b662-45cb-b5f7-316ac33ed660%2F33.PNG)   
+
+리소스가 없는 경우   
+![](https://velog.velcdn.com/images%2Fgil0127%2Fpost%2F5b9db58c-43e2-4732-830b-627efada87f7%2F44.PNG)   
+![](https://velog.velcdn.com/images%2Fgil0127%2Fpost%2F2180392b-a8ac-4c2d-8f58-f9ef21de8681%2F55.PNG)   
+> 클라이언트가 지정한 위치가 존재하는 리소스가 없으면 신규 리소스가 생성된다   
+
+주의!! - 리소스를 완전히 대체한다   
+![](https://velog.velcdn.com/images%2Fgil0127%2Fpost%2F0ef95bf0-531e-4d1a-9a26-5b35457e6634%2F66.PNG)   
+![](https://velog.velcdn.com/images%2Fgil0127%2Fpost%2Fccaa190a-11c3-447a-b36f-dee51964ebad%2F77.PNG)   
+
+PATCH
+- 리소스 부분 변경
+> PATCH가 지원이 안되는 HTTP도 있음
+
+리소스 부분 변경   
+![](https://velog.velcdn.com/images%2Fgil0127%2Fpost%2F220a4404-0ded-4272-ad92-b49f4358f4c7%2F2.PNG)    
+![](https://velog.velcdn.com/images%2Fgil0127%2Fpost%2F187191f4-065b-4ce3-adac-879f26aab779%2F3.PNG)  
+
+DELETE   
+- 리소스 제거
+
+리소스 제거   
+![](https://velog.velcdn.com/images%2Fgil0127%2Fpost%2Fc821fe4d-167e-4509-ba08-fe2ce96c2ab0%2F222.PNG)   
+![](https://velog.velcdn.com/images%2Fgil0127%2Fpost%2Fd5863383-8add-4993-9c26-cf04534c7082%2F333.PNG)   
+
+---
+### HTTP 메서드의 속성
+```
+안전(Safe Methods)
+멱등(Idempotent Methods)
+캐시가능(Cacheable Methods)
+```
+언제 어떤 메소드를 사용?   
+![](https://velog.velcdn.com/images%2Fgil0127%2Fpost%2F6a62e540-ceb2-49cd-94e5-ad5907fadec8%2F1.PNG)
+
+안전(Safe)
+- 호출해도 리소스를 변경하지 않는다
+- Q : 그래도 계속 호출해서, 로그 같은게 쌓여서 장애가 발생하면요?
+- A : 안전은 해당 리소스만 고려한다 그런 부분까지 고려하지 않는다
+
+멱등(Idempotent)
+- f(f(x)) = f(x)
+- 한 번 호출하든 두 번 호출하든 100번 호출하든 결과가 똑같다
+- 멱등 메서드
+    - GET : 한번 조회하든, 두 번 조회하든 같은 결과가 조회된다
+    - PUT : 결과를 대체한다 따라서 같은 요청을 여러번해도 최종 결과는 같아
+    - DELETE : 결과를 삭제한다 같은 요청을 여러번해도 최종 결과는 같다
+    > POST : 멱등이 아니다 두번 호출하면 같은 별제가 중복해서 발생할 수 있다
+- 활용
+    - 자동 복구 메커니즘
+    - 서버가 TIMEOUT 등으로 정상 응답을 못주었을때, 클라이언트가 같은 요청을 다시 해도 되는가? 판단 근거
+- Q : 재요청 중간에 다른 곳에서 리소스를 변경해버리면?
+    - 사용자1 : GET -> username:A, age:20
+    - 사용자2 : PUT -> usernameB, age:30
+    - 사용자3 : GET -> username:A, age:30 -> 사용자2의 영향으로 바뀐 데이터 조회
+- A : 멱등은 외부 요인으로 중간에 리소스가 변경되는 것까지는 고려하지는 않는다
+
+
+캐시가능(Cacheable)
+- 응답 결과 리소스를 캐시해서 사용해도 되는가?
+- GET,HEAD,POST,PATCH 캐시가능
+- 실제로는 GET,HEAD 정도만 캐시로 사용
+    - POST,PATCH는 본문 내용까지 캐시 키로 고려해야 하는데, 구현이 쉽지 않음
