@@ -59,3 +59,56 @@ HTTP BODY
     - 참고: 표현 헤더는 표현 메타데이터와, 페이로드 메시지를 구분해야 하지만, 여기서는 생략
 
 ---
+### 표현
+```
+- Content-Type : 표현 데이터의 형식
+- Content-Encoding : 표현 데이터의 압축 방식
+- Content-Language : 표현 데이터의 자연 언어
+- Content-Length : 표현 데이터의 길이
+
+- 표현 헤더는 전송, 응답 둘다 사용
+```
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fc0fbdc83-b061-40a5-86bf-4df7184db205%2FUntitled.png&blockId=8ca73a3f-e079-4d94-9460-2c06876fe5b1)
+
+Content-Type   
+```
+표현 데이터의 형식 설명
+```
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fabcd2b4a-f779-4a3b-a4c2-935e1bb390e7%2FUntitled.png&blockId=ba10c03c-2825-46f3-a462-bf44663d3d3c)
+- 미디어 타입, 문자 인코딩
+- 예)
+    - text/html; charset-utf-8
+    - application/json
+    - image/png
+
+Content-Encoding
+```
+표현 데이터 인코딩
+```
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fca2848bb-cf2e-4d9a-adb7-4b5656ac3c72%2FUntitled.png&blockId=1a501a0c-1d9b-4561-9679-d7ef4c0f2b9b)
+- 표현 데이터를 압축하기 위해 사용
+- 데이터를 전달하는 곳에서 압축 후 인코딩 헤더 추가
+- 데이터를 읽는 쪽에서 인코딩 헤더의 정보로 압축 해제
+- 예)
+    - gzip
+    - deflate
+    - identity
+
+Content-Language
+```
+표현 데이터의 자연 언어
+```
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fad9247a8-4844-40ec-bf7f-2048792f0a22%2FUntitled.png&blockId=030f6bec-8fe3-4822-aab5-0339fea2e68d)
+- 표현 데이터의 자연 언어를 표현
+- 예) 
+    - ko
+    - en
+    - en-US
+
+Content-Length
+```
+표현 데이터의 길이
+```
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F59ba7df8-58a4-42b1-942c-eba57a3480a8%2FUntitled.png&blockId=4889090d-a9fa-4580-9e63-2e4757a2e506)
+- 바이트 단위
+- Transfer-Encoding(전송 코딩)을 사용하면 Content-Length를 사용하면 안됨
