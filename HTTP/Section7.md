@@ -345,3 +345,125 @@ HOST가 없을 경우 생기는 문제
 - 401 Unauthorized 응답과 함께 사용
 - WWW-Authenticate: Newauth realm= "apps", type=1,title="Login to /"apps/"",Basic realm="simple"
 ---
+### 쿠키
+```
+- Set-Cookie : 서버에서 클라이언트로 쿠키 전달 (응답)
+- Cookie : 클라이언트가 서버에서 받은 쿠키를 저장하고, HTTP 요청시 서버로 전달한다
+```
+
+**주 사용 목적**
+- 세션 관리 (Session Management)
+    - 서버에 저장해야 할 로그인, 장바구니, 게임 스코어등의 정보 관리
+- 개인화 (Personalization)
+    - 사용자 선호, 테마 등의 세팅
+- 트래킹 (Tracking)
+    - 사용자 행동을 기록하고 분석하는 용도
+
+
+**쿠키 미사용**   
+- 로그인했을 때   
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff8e9dad9-9df5-48b6-8794-c729a913d152%2FUntitled.png&blockId=997f8dc5-92ab-4114-bd46-460594aa69a1)
+- 로그인 이후 /welcome   
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F57405d1d-1d8b-4cb1-9bde-c5e9e563c397%2FUntitled.png&blockId=34d76299-b020-41df-8918-345ef19e6e27) 
+    - 서버 입장에서는 이게 로그인한 유저가 보낸 요청인지 알수 없다
+    - 그렇기에 게스트로 판단해서 응답을 할 수 밖에 없다
+    - HTTP는 무상태 프로토콜 (Stateless Protocol)이라는 점을 기억해야 한다
+
+**Stateless**
+```
+- 클라이언트와 서버가 요청과 응답을 주고 받으면 연결이 끊어진다
+- 클라이언트가 다시 요청하면 서버는 이전 요청을 기억하지 못한다
+- 클라이언트와 서버는 서로 상태를 유지하지 않는다
+```
+
+**쿠키 미사용 대안**
+- 모든 요청에 사용자 정보 포함
+    - 모든 요청과 링크에 사용자 정보를 포함해야하기에 비용소모가 몹시 크다  
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fea0ae459-7e87-4d1c-9ec4-67066c0368a3%2FUntitled.png&blockId=d9f94009-fc7e-4c58-8959-25b0625638f3) 
+    - 브라우저를 완전히 종료 후 다시 열면 정보를 포함할 수 없다
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F1f39a7a0-ad6b-418e-bac0-a704356bc33e%2FUntitled.png&blockId=537fd4bc-4680-45e3-ad4a-abd212c4a08c)
+    - 모든 요청에 정보를 넘기는 문제
+        - 모든 요청에 사용자 정보가 포함되도록 개발 해야함
+- 쿠키를 사용한다
+    - 클라이언트에서 로그인을 요청하며 데이터를 보내면 서버에서는 Set-Cookie로 로그인 정보를 담아 응답한다
+    - 웹브라우저는 내장된 쿠키 저장소에 Set-Cookie에 있는 정보를 저장한다
+    ![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F2363da7a-3288-4489-b143-2fd3e2a3f5a0%2FUntitled.png&blockId=962ed034-cf77-43f6-91f1-323178882346)
+    - 그래서 로그인 이후 welcome 페이지에 접근하면 쿠키를 조회해서 쿠키값을 Cookie에 담아서 보낸다
+    ![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F5939feca-86bc-46ca-8c88-4cfd6a7d443e%2FUntitled.png&blockId=dfa017bb-598c-4505-a0ff-f62dfad8c0cc)
+    - 하지만 이렇게 매번 쿠키를 담아 보내는 것도 문제가 있다
+    ![](https://3513843782-files.gitbook.io/~/files/v0/b/gitbook-legacy-files/o/assets%2F-LxjHkZu4T9MzJ5fEMNe%2Fsync%2F36801be7c429897dc03a6dec89ebda4daf9cf59c.png?generation=1617536095226369&alt=media)
+
+**쿠키의 사용처 및 사용시 주의점**
+```
+예)
+set-cookie: sessionId=abcde1234; expires=Sat, 26-Dec-2020 00:00:00 GMT; path=/; domain=.google.com; Secure
+```
+- 사용처
+    - 사용자 로그인 세션 관리
+    - 광고 정보 트래킹
+- 쿠키 정보는 항상 서버에 전송됨
+    - 네트워크 트래픽 추가 유발
+    - 최소한의 정보만 사용(세션 id, 인증 토큰)
+    - 서버에 전송하지 않고, 웹 브라우저 내부에 데이터를 저장하고 싶으면 웹 스토리지 (localStorage, sessionStorage) 참고
+- 주의!
+    - 보안에 민감한 데이터는 저장하면 안됨(주민번호, 신용카드 번호 등등)
+
+**생명주기**
+```
+Expires, max-age
+```
+- Set-Cookie: **expires**=Sat, 26-Dec-2020 04:39:21 GMT
+    - 만료일이 되면 쿠키 삭제
+- Set-Cookie: **max-age**=3600 (3600초)
+    - 0이나 음수를 지정하면 쿠키 삭제
+- 세션 쿠키 : 만료 날짜를 생략하면 브라우저 종료시 까지만 유지
+- 영속 쿠키 : 만료 날짜를 입력하면 해당 날짜까지 유지
+
+**도메인**
+```
+Domain
+```
+```
+예)
+domain=example.org
+```
+- **명시 : 명시한 문서 기준 도메인 + 서브 도메인 포함**
+    - domain=example.org를 지정해서 쿠키 생성
+        - example.org는 물론이고
+        - dev.example.org도 쿠키 접근
+- **생략 : 현재 문서 기준 도메인만 적용**
+    - example.org 에서 쿠키를 생성하고 domain 지정을 생략
+        - example.org 에서만 쿠키 접근
+        - dev.example.org는 쿠키 미접근
+
+**경로**
+```
+Path
+```
+```
+예)
+path=/home
+```
+- 이 경로를 포함한 하위 경로 페이지만 쿠키 접근
+- 일반적으로 path=/ 루트로 지정
+- 예)
+    - path=/home 지정
+    - /home -> 기능
+    - /home/level1 -> 가능
+    - /home/level1/level2 -> 가능
+    - /hello -> 불가능
+
+**보안**
+```
+Secure, HttpOnly, SameSite
+```
+- Secure
+    - 쿠키는 http, https를 구분하지 않고 전송 
+    - Secure를 적용하면 https인 경우에만 전송
+- HttpOnly
+    - XSS 공격 방지
+    - 자바스크립트에서 접근 불가(document.cookie)
+    - HTTP 전송에만 사용
+- SameSite
+    - XSRF 공격 방지
+    - 요청 도메인과 쿠키에 설정된 도메인이 같은 경우만 쿠키 전송
