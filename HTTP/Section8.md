@@ -150,4 +150,113 @@ ETag를 사용한 두 번째 요청(캐시 시간 초과)
 - 예)
     - 서버는 배타 오픈 기간인 3일 동안 파일이 변경되어도 ETag를 동일하게 유지
     - 애플리케이션 배포 주기에 맞추어 ETag 모두 갱신
+
+>검증 헤더와 조건부 요청 헤더
+>```
+>- 검증 헤더 (Validator)
+>    - ETag : "v1.0", ETag : "asid93jkrh2l"
+>    - Last-Modified : Thu, 04 Jun 2020 07:19:24 GMT
+>-  조건부 요청 헤더
+>    - If-Match, If-None-Match : ETag 값 사용
+>    - If-Modified-Since, If-Unmodified-Since : Last-Modified 값 사용
+>```
 ---
+### 캐시와 조건부 요청 헤더
+캐시 제어 헤더
+```
+- Cache-Control : 캐시 제어
+- Pragma : 캐시 제어(하위 호한)
+- Expires : 캐시 유효 기간(하위 호환)
+```
+
+**Cache-Control**
+```
+캐시 지시어(directives)
+```
+- Cache-Control : max-age
+    - 캐시 유효 시간, 초 단위
+- Cache-Control : no-cache
+    - 데이터는 캐시해도 되지만, 항상 원(origin) 서버에 검증하고 사용
+- Cache-Control : no-store
+    - 데이터에 민감한 정보가 있으므로 저장하면 안됨
+    (메모리에서 사용하고 최대한 빨리 삭제)
+
+**Pragma**
+```
+캐시 제어(하위 호환)
+```
+- Pragma : no-cache
+- HTTP 1.0 하위 호환
+
+**Expires**
+```
+캐시 만료일 지정(하위 호환)
+```
+- expires : Mon, 01 Jan 1990 00:00:00 GMT
+
+- 캐시 만료일을 정확한 날짜로 지정
+- HTTP 1.0 부터 사용
+- 지금은 더 유연한 Cache-Control: max-age 권장
+- Cache-Control: max-age와 함께 사용하면 Expires는 무시
+---
+### 프록시 캐시
+원 서버 직접 접근(origin 서버)   
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F4aeeb09a-0524-47d3-8952-db4993de5171%2FUntitled.png&blockId=1e32a46b-db1b-4925-a65a-1abd976ca888)
+
+프록시 캐시 도입 - 첫 번째 요청   
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F0bff9c23-e093-4622-ac73-285d2525e3f0%2FUntitled.png&blockId=683924e1-14ec-4e30-bd01-034ad2c42dc3)
+- 한국에 프록시 캐시서버를 두고 한국의 클라이언트는 프록시 캐시 서버를 통해 자료를 가져오도록 한다
+- 여러 사람이 찾은 자료일수록 이미 캐시에 등록되어있기에 빠른 속도로 자료를 가져올 수 있다
+    - 같은 국내에 있기에 원서버에 접근하는 것보다 훨씬 빠른 속도 자료를 가져올 수 있다
+    - 예) 유튜브에서 고용량의 영상도 빨리 볼 수 있는 이유
+- 클라이언트에서 사용되고 저장되는 캐시를 `private캐시`라 하고 프록시 캐시서버의 캐시를 `public 캐시`라 한다
+
+**Cache-Control**
+```
+캐시 지시어(directives) - 기타
+```
+- Cache-Contro : public
+    - 응답이 public 캐시에 저장되어도 됨
+- Cache-Control : private
+    - 응답이 해당 사용자만을 위한 것임, private 캐시에 저장해야 함(기본값)
+- Cache-Control : s-maxage
+    - 프록시 캐시에만 적용되는 max-age
+- Age: 60 (HTTP 헤더)
+    - 오리진 서버에서 응답 후 프록시 캐시 내에 머문 시간(초)
+---
+### 캐시 무효화
+Cache-Control
+```
+확실한 캐시 무효화 응답
+```
+- Cache-Control: no-cache, no-store, numst-revalidate
+- Pragema: no-cache
+    - HTTP 1.0 하위 호환
+
+**Cache-Control**
+```
+캐시 지시어(directives) - 확실한 캐시 무효화
+```
+- Cache-Contro: no-cache
+    - 데이터는 캐시해도 되지만, 항상 원 서버에 검증하고 사용(이름에 주의!)
+- Cache-Control: no-store
+    - 데이터에 민감한 정보가 있으므로 저장하면 안됨(메모리에서 사용하고 최대한 빨리 삭제)
+- Cache-Control: must-revalidate
+    - 캐시 만료후 최초 조회시 원 서버에 검증해야함
+    - 원 서버 접근 실패시 반드시 오류가 발생해야함 - 504(Gateway Timeout)
+    - must-revalidate는 캐시 유효 시간이라면 캐시를 사용함
+- Pragma: no-cache
+    - HTTP 1.0 하위 호환
+
+**no-cache vs must-revalidate**
+no-cache 기본 동작
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F01525460-7f40-4004-be8f-ee4e75a1c082%2FUntitled.png&blockId=da245c9d-7d29-4409-adfd-62cd6df5d267)
+- 캐시 서버 요청을 하면 프록시 캐시 서버에 도착하면 no-cache인 경우 원 서버에 요청을 하게된다.그리고 원 서버에서 검증 후 응답을하게 된다
+- 하지만, 어떤한 이유라도 프록시 캐시 서버와 원 서버간 네트워크 연결이 단절되어 접근이 불가능 하다면, no-cache에서는 응답으로 오류가 아닌 오래된 데이터라도 보여주자라는 개념으로 200OK으로 응답을 한다
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F48151293-63ed-48fc-bc77-1dfa5a530cd8%2FUntitled.png&blockId=261b634b-f853-495e-83ba-d7bb43c215b8)
+
+must-revalidate   
+![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fdaae5f9c-0898-4707-bd60-a84dcfeaffcb%2FUntitled.png&blockId=abd4d418-3157-494f-aed2-3066e4ad3d21)
+- 캐시 서버요청을 해 프록시 캐시 서버로 갔을때 캐시 서버와 원 서버간의 연결이 단절되어 접근이 불가능하다면 must-revalidate에서는 원 서버에 접근이 불가능한 경우 항상 오류가 발생해야 한다(504 Gateway Timeout)
+
+> 확실한 캐시 무효화 응답으로 작성한 헤더를 사용하게 되면 no-cache로 무조건 원 서버에서 검증을 하게하고 must-revalidate로 원 서버와 검증이 안되면 오류가 발생하도록 한다 그리고 Pragma를 사용해서 혹시모를 1.0 이하 버전의 하위호환도 적용해준다
