@@ -248,11 +248,11 @@ Cache-Control
 - Pragma: no-cache
     - HTTP 1.0 하위 호환
 
-**no-cache vs must-revalidate**
+**no-cache vs must-revalidate**   
 no-cache 기본 동작
 ![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F01525460-7f40-4004-be8f-ee4e75a1c082%2FUntitled.png&blockId=da245c9d-7d29-4409-adfd-62cd6df5d267)
 - 캐시 서버 요청을 하면 프록시 캐시 서버에 도착하면 no-cache인 경우 원 서버에 요청을 하게된다.그리고 원 서버에서 검증 후 응답을하게 된다
-- 하지만, 어떤한 이유라도 프록시 캐시 서버와 원 서버간 네트워크 연결이 단절되어 접근이 불가능 하다면, no-cache에서는 응답으로 오류가 아닌 오래된 데이터라도 보여주자라는 개념으로 200OK으로 응답을 한다
+- 하지만, 어떤한 이유라도 프록시 캐시 서버와 원 서버간 네트워크 연결이 단절되어 접근이 불가능 하다면, no-cache에서는 응답으로 오류가 아닌 오래된 데이터라도 보여주자라는 개념으로 200OK으로 응답을 한다   
 ![](https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F48151293-63ed-48fc-bc77-1dfa5a530cd8%2FUntitled.png&blockId=261b634b-f853-495e-83ba-d7bb43c215b8)
 
 must-revalidate   
