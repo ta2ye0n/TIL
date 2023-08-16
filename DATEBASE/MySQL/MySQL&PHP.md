@@ -36,3 +36,111 @@ PHP와 연동되어 사용되는 MySQL의 동작 원리
 5. 웹 서버는 완성된 웹 페이지를 클라이언트의 브라우저로 전송한다
 ```
 ---
+### MySQL 연결
+- 서버와의 연결
+PHP를 사용하여 MySQL 데이터베이스에 접속하기 우해서는 우선 서버와의 연결이 필요하다   
+MySQLi에서는 서버와의 연결을 위해 mysqli_connect()함수를 제공하고 있다
+```SQL
+MySQLi를 사용하여 서버와 연결하는 예제
+
+<?php
+
+    $servername = "localhost";
+    $user = "choi";
+    $password = "0219";
+
+①  $connect = mysqli_connect($servername, $user, $password);
+    if (!$connect) {
+②      die("서버와의 연결 실패! : ".mysqli_connect_error());
+    }
+    echo "서버와의 연결 성공!";
+?>
+```
+위 예제의 ①번 라인에서는 mysql_conncect() 함수에 서버 이름, 사용자명과 비밀번호를 전달하여 서버와의 연결을 시도한다   
+만약 서버와의 연결에 실패했다면, mysqli_connect_error() 함수를 사용하여 마지막 에러 메시지를 출력한다
+
+> die() 함수는 인수로 전달받은 메시지를 출력하고, 현재 실행 중인 PHP 스크립트를 종료시키는 함수이다
+
+- 서버와의 연결 종료
+이렇게 생성된 서버와의 연결은 PHP 스크립트가 끝나면 자동으로 같이 종료된다
+하지만 PHP 스크립트가 끝나기 전에 서버와의 연결을 종료하고 싶다면, mysqli_close() 함수를 호촐하면 된다
+```SQL
+예제
+<?php
+    mysqli_close($connect);
+?>
+```
+---
+### MySQL CREATE
+- 데이터베이스 생성
+MySQL의 CREATE dATABASE문은 새로운 데이터 베이스를 생성할 때 사용한다
+```SQL
+예제
+<?php
+    $servername = "localhost";
+    $user = "choi";
+    $password = "0219";
+
+    $connect = mysqli_connect($servername, $user, $password);
+
+    if (!$connect) {
+        die("서버와의 연결 실패! : ".mysqli_connect_error());
+    }
+ 
+①  $sql = "CREATE DATABASE Hotel";
+
+②  if (mysqli_query($connect, $sql)) {
+        echo "데이터베이스 생성 성공!";
+    } else {
+        echo "데이터베이스 생성 실패! : ".mysqli_error($connection);
+    }
+   mysqli_close($connection);
+?>
+```
+위 예제의 ①번 라인에서는 Hotel이라는 ㅇ름의 데이터베이스를 생성하는 SQL 구문(statement)을 작성한다
+이렇게 작성한 SQL 구문을 ②번 라인에서 mysqli_query() 함수에 인수로 전달하여 실행한다
+
+mysqli_query() 함수는 인수로 전달받은 SQL 구문을 실행하여, 그 결과를 반환하는 함수이다   
+이 함수는 해당 구문의 실행에 실패하면 FALSE를 반환한다   
+그리고 SELECT,SHOW,DESCRIBE,EXPLAIN 문을 성공적으로 실행했을 경우에는 해당 결과가 저장된 결과 집합인 mysqli_result 객체를 반환하며, 그 외의 구문이 성공적으로 실행되면 TRUE를 반환한다
+
+- 데이틀 생성
+데이터베이스는 하나 이상의 테이블로 구성되며, 이러한 테이블에 데이터를 저장하여 관리할 수 있다 
+MySQL의 CREATE TABLE문은 새로운 데이터베이스를 생성할 때 사용한다
+```SQL
+4개의 필드를 갖는 Reservation 테이블을 생성하는 PHP 예제
+
+<?php
+    $servername = "localhost";
+    $user = "choi";
+    $password = "0219";
+    $dbname = "testDB";
+
+    $connect = mysqli_connect($servername, $user, $password, $dbname);
+    if (!$connect) {
+        die("서버와의 연결 실패! : ".mysqli_connect_error());
+    }
+
+①  $sql = "CREATE TABLE Reservation
+    (
+        ID INT PRIMARY KEY,
+        Name VARCHAR(30) NOT NULL,
+        ReservDate DATE NOT NULL,
+        RoomNum INT
+    )";
+
+    if (mysqli_query($connect, $sql)) {
+
+        echo "테이블 생성 성공!";
+    } else {
+        echo "테이블 생성 실패! : ".mysqli_error($connection);
+    }
+    mysqli_close($connection);
+?>
+```
+위의 예제는 ①번 라인에서는 4개의 필드를 갖는 Reservation이라는 이름의 테이블을 생성하는 SQL 구문을 작성한다   
+테이블을 생성할 때는 필드의 이름뿐만 아니라 타입, 제약조건 등을 함께 명시할 수 있다
+
+> mysqli_error() 함수는 마지막으로 발생한 에러에 대한 정보를 문자열로 반환하는 함수이다
+
+---
