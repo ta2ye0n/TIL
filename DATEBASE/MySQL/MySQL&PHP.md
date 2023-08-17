@@ -144,3 +144,110 @@ MySQL의 CREATE TABLE문은 새로운 데이터베이스를 생성할 때 사용
 > mysqli_error() 함수는 마지막으로 발생한 에러에 대한 정보를 문자열로 반환하는 함수이다
 
 ---
+### MySQL INSERT
+- 레코드 추가
+INSERT INTO문을 사용하면 테이블에 새로운 레코드를 추가할 수 있다
+```SQL
+Reservation 테이블에 새로운 레코드를 추가하는 PHP 예제
+
+<?php
+    $servername = "localhost";
+    $user = "choi";
+    $password = "0219";
+    $dbname = "testDB";
+
+    $connect = mysqli_connect($servername, $user, $password, $dbname);
+    if (!$connect) {
+        die("서버와의 연결 실패! : ".mysqli_connect_error());
+    }
+    echo "서버와의 연결 성공!";
+
+    // VALUES 절을 통해 전달한 데이터로 Reservation 테이블에 새로운 레코드를 추가하는 SQL 구문
+①  $sql = "INSERT INTO Reservation(ID, Name, ReserveDate, RoomNum)
+        VALUES(5, '이순신', '2016-02-16', 1108)";
+
+    if (mysqli_query($connect, $sql)) {
+
+        echo "레코드 추가 성공!";
+    } else {
+        echo "레코드 추가 실패! : ".mysqli_error($connection);
+    }
+    mysqli_close($connection);
+?>
+```
+위 예제의 ①번 라인에서는 Reservation 테이블에 새로운 레코드를 추가하는 SQL 구문을 작성한다
+이때 VALUES 절을 사용하여 새로운 레코드를 구성할 데이터를 함께 전달하고 있다
+
+> 문자열 데이터에는 따옴표를 사용해야 하며, 숫자 데이터에는 따옴표를 사용하지 않아도 된다
+
+- 여러 레코드 추가
+mysqli_multi_query() 함수를 사용하면, 여러 레코드를 한 번에 추가할 수 있다   
+이때 각각의 INSERT 문은 반드시 세미콜론(;)으로 구분하여 하나의 문자열로 전달해야한다
+```SQL
+Reservation 테이블에 여러 개의 새로운 레코드를 한 번에 추가하는 PHP 예제
+<?php
+    $servername = "localhost";
+    $user = "choi";
+    $password = "0219";
+    $dbname = "testDB";
+
+    $connect = mysqli_connect($servername, $user, $password, $dbname);
+    if (!$connect) {
+        die("서버와의 연결 실패! : ".mysqli_connect_error());
+    }
+    echo "서버와의 연결 성공!";
+
+①  $sql = "INSERT INTO Reservation(ID, Name, ReserveDate, RoomNum)
+
+        VALUES(1, '홍길동', '2016-01-05', 2014);";
+②  $sql .= "INSERT INTO Reservation(ID, Name, ReserveDate, RoomNum)
+        VALUES(2, '임꺽정', '2016-02-12', 918);";
+③  $sql .= "INSERT INTO Reservation(ID, Name, ReserveDate, RoomNum)
+        VALUES(3, '장길산', '2016-01-16', 1208)";
+
+    if (mysqli_query($connect, $sql)) {
+        echo "레코드 추가 성공!";
+    } else {
+        echo "레코드 추가 실패! : ".mysqli_error($connection);
+    }
+    mysqli_close($connection);
+?>
+```
+위 예제의 ①번 라인에서는 Reservation 테이블에 새로운 레코드를 추가하는 SQL 구문을 작성하고 있다   
+그리고 ②번과 ③번 라인에서 새로운 레코드를 추가하는 SQL 구문을 더 작성하여 그것을 문자열 형태로 추가하고 있다   
+이때 SQL 구문 사이에는 세미콜론(;)이 반드시 추가되어야 한다
+
+---
+### MySQL UPDATE
+- 레코드 수정
+UPDATE 문을 사용하면 테이블에 저장된 레코드의 내용을 수정할 수 있다
+```SQL
+Reservation 테이블의 레코드의 내용을 수정하는 PHP 예제
+
+<?php
+    $servername = "localhost";
+    $user = "choi";
+    $password = "0219";
+    $dbname = "testDB";
+
+    $connect = mysqli_connect($servername, $user, $password, $dbname);
+    if (!$connect) {
+        die("서버와의 연결 실패! : ".mysqli_connect_error());
+    }
+
+    // SET 절을 통해 전달한 데이터로 Reservation 테이블의 레코드를 수정하는 SQL 구문
+①  $sql = "UPDATE Reservation
+        SET RoomNum = 2002
+        WHERE Name = '홍길동'";
+
+    if (mysqli_query($connect, $sql)) {
+        echo "레코드 수정 성공!";
+    } else {
+        echo "레코드 수정 실패! : ".mysqli_error($connection);
+    }
+    mysqli_close($connection);
+?>
+```
+위 예제의 ①번 라인에서는 Reservation 테이블에 저장된 Name 값이 '홍길동'인 레코드의 RoomNum 값을 2002로 수정하는 SQL 구문을 작성한다
+
+---
