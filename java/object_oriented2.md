@@ -385,3 +385,35 @@ getter 메소드를 이용해 값을 가공해 반환할 수 있다
 
 > spring 프레임워크에서는 setter, getter을 프로퍼티라고 한다   
 자바 공부할때는 프로퍼티라는 용어가 사용되지 않는다
+
+**toString(), equals(), hashCode() 메소드**
+
+Object가 오버라이딩하라고 제공하는 메소드
+- toString()
+- equals() & hashCode()
+
+```
+부모타입의 변수로 자식인스턴스를 참조할 수 있다
+조상타입의 변수로 후손 인스턴스를 창조할 수 있다
+Ex) Car c1 = new Bus();
+    Car c2 = new 이층버스(); -> 이층버스는 Car의 자손이다
+
+아무것도 상속 받지 않으면 오브젝트를 상속 받기 때문에
+Object o1 = new Car();
+Object o2 = new Bus();
+이렇게 써도 오류가 안남
+
+System.out.println(Car); // println(object s) - Object로 참조할 수 있는 것은 무엇이든 받을 수 있다
+
+System.out.println(o1.toString()); == System.out.println(o1);
+```
+```
+equals() - 값이 같은지 보는 것
+사용자가 기준을 정해줘야하고 오버라이딩해서 사용해야 한다
+
+값이 같다? -> 인스턴스가 같나? 같은지 보려면 기준을 정해줘야 한다
+
+예시) 책장에 있는 책 - 제목이 같으면 같은 책이다
+
+hash를 잘 구현하려면 - 값이 같은지 확인하거나 hashcode 만들거나
+```
