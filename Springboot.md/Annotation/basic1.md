@@ -120,3 +120,12 @@ data(json,xml 등) return이 주목적이다
 즉, **@RestController = @Controller + @ResponseBody** 이다
 
 ---
+### @Service
+Service Class에서 쓰임
+`비즈니스 로직을 수행하는 Class라는 것을 나타내는 용도`이다
+
+---
+### @Repository
+`DB연동 작업을 하는 클래스인 DAO에 특화`된 어노테이션으로, 해당 클래스에서 발생하는 `DB 관련 예외를 spring의 DAOException으로 전환`할 수 있는 장점이 있다
+
+---
