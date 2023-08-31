@@ -84,7 +84,7 @@ Configuration 클래스에서 외부라이브러리 관련 객체를 미리 객�
 - 생성자 (@AllArgsConstructor 사용) -> 권장방식
 ```
 ---
-### Controller
+### @Controller
 Spring에게 해당 Class가 Controller의 역할을 한다고 명시하기 위해 사용하는 Annotation이다
 ```java
 @Controller                   // 이 Class는 Controller 역할을 합니다
@@ -96,3 +96,27 @@ public class UserController {
     }
 }
 ```
+
+### @RestController
+Spring에서 `Controller 중 View로 응답하지 않는, Controller의 의미`한다   
+method의 반환 결과를 JSON형태로 반환한다
+> JavaScript Object Notation (JSON)은 Javascript 객체 문법으로 구조화된 데이터를 표현하기 위한 문자 기반의 표준 포맷이다
+
+이 Annotation이 적혀있는 Controller의 method는 HttpRespones로 바로 응답이 가능하다   
+@ResponseBody 역할을 자동적으로 해주는 Annotation이다   
+@Controller + @ResponseBody를 사용하면 `@ResponseBody를 모든 메소드에서 적용`한다
+
+### @Controller와 @RestController의 차이
+- @Controller   
+`API와 view를 동시에 사용하는 경우에 사용`한다   
+대신 `API 서비스로 사용하는 경우는 @ResponseBody를 사용하여 객체를 반환`한다   
+view(화면) return이 주목적이다
+- @RestController
+`view가 필요없는 API만 지원하는 서비스에서 사용`한다   
+Spring 4.0.1부터 제공   
+`@RequestMapping 메서드가 기본적으로 @ResponseBody 의미를 가정`한다   
+data(json,xml 등) return이 주목적이다
+
+즉, **@RestController = @Controller + @ResponseBody** 이다
+
+---
