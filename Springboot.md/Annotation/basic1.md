@@ -66,7 +66,7 @@ public class ApplicationCongif {
 Configuration 클래스에서 외부라이브러리 관련 객체를 미리 객체화 시켜놓을 때 많이 사용한다
 
 ---
-### Autowired
+### @Autowired
 속성(field), setter method, constructor(생성자)에서 사용하며 `Type에 따라 알아서 Bean을 주입` 해준다
 무조건적인 객체에 대한 `의존성을 주입`시킨다
 이 Annotation을 사용할 시, 스프링이 자동적으로 값을 할당한다
@@ -111,7 +111,7 @@ method의 반환 결과를 JSON형태로 반환한다
 `API와 view를 동시에 사용하는 경우에 사용`한다   
 대신 `API 서비스로 사용하는 경우는 @ResponseBody를 사용하여 객체를 반환`한다   
 view(화면) return이 주목적이다
-- @RestController
+- @RestController   
 `view가 필요없는 API만 지원하는 서비스에서 사용`한다   
 Spring 4.0.1부터 제공   
 `@RequestMapping 메서드가 기본적으로 @ResponseBody 의미를 가정`한다   
