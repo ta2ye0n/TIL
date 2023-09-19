@@ -166,3 +166,32 @@ JWT도 제 3자에게 토큰 탈취의 위험성이 있기 때문에, 그대로 
 - Refresh Token : `새로운 Access Token을 발급해주기 위해 사용하는 토큰`으로 짧은 수명을 가지는 Access Token에게 새로운 토큰을 발급해주기 위해 사용한다   
 해당 토큰은 보통 `데이터베이스`에 유저 정보와 같이 기록한다
 > Access Token과 Refresh Token은 둘다 똑같은 JWT이다 다만 토큰이 어디에 저장되고 관리되느냐에 따른 사용 차이일 뿐이다
+
+**Access / Refresh Token 재발급 원리**   
+1. 기본적으로 `로그인 같은 과정`을 하면 Access Token과 Refresh Token을 모두 발급한다   
+이때, Refresh Token만 `서버측의 DB에 저장`하며, Refresh Token과 Access Token을 `쿠키 혹은 웹소토리지`에 저장한다
+
+2. 사용자가 `인증이 필요한 API에 접근`하고자 하면, 가장 먼저 토큰을 검사한다   
+이때, 토큰을 검사함과 동시에 각 경웨 대해서 `토큰의 유효기간을 확인하여 재발급 여부를 결정`한다
+    ```
+    - access token과 refresh token 모두가 만료된 경우 
+        -> 에러발생 (재 로그인하여 둘다 새로 발급)
+
+    - access token 만료, refresh token 유효 
+        -> refresh token을 검증하여 access token 재발급
+
+    - access token 유효, refresh token 만료 
+        -> access token을 검증하여 refresh token 재발급
+
+    - access token과 refresh token 모두가 유효한 경우 
+        -> 정상처리
+    ```
+    > refresh token을 검증하여 access token 재발급
+    >> 클라이언트(쿠키, 웹스토리지)에 저장되어있는 refresh token과 서버 DB에 저장되어있는 refresh token 일치성을 확인한 뒤 access token 재발급한다
+    > access token을 검증하여 refresh token 재발급
+    >> access token이 유효하다라는 것은 이미 인증된 것과 마찬가지니 바로 refresh token 재발급한다
+
+3. 로그아웃을 하면 Access Token과 Refresh Token을 모두 만료시킨다
+
+**Refresh Token 인증과정**   
+![](https://blog.kakaocdn.net/dn/bL0Upi/btqEF44TxgK/KwUK00u4qq3VRSzDpcRkx1/img.png)
