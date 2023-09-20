@@ -195,3 +195,28 @@ JWT도 제 3자에게 토큰 탈취의 위험성이 있기 때문에, 그대로 
 
 **Refresh Token 인증과정**   
 ![](https://blog.kakaocdn.net/dn/bL0Upi/btqEF44TxgK/KwUK00u4qq3VRSzDpcRkx1/img.png)
+
+1. 사용자가 ID , PW를 통해 로그인.
+
+2. 서버에서는 회원 DB에서 값을 비교
+
+3. ~ 4. 로그인이 완료되면 Access Token, Refresh Token을 발급한다. 이때 회원DB에도 Refresh Token을 저장해둔다.
+
+5. 사용자는 Refresh Token은 안전한 저장소에 저장 후, Access Token을 헤더에 실어 요청을 보낸다.
+
+6. ~ 7. Access Token을 검증하여 이에 맞는 데이터를 보낸다.
+
+8. 시간이 지나 Access Token이 만료됐다.
+
+9. 사용자는 이전과 동일하게 Access Token을 헤더에 실어 요청을 보낸다.
+
+10~11. 서버는 Access Token이 만료됨을 확인하고 권한없음을 신호로 보낸다.
+> Access Token 만료가 될 때마다 계속 과정 9~11을 거칠 필요는 없다.
+사용자(프론트엔드)에서 Access Token의 Payload를 통해 유효기간을 알 수 있다.
+따라서 프론트엔드 단에서 API 요청 전에 토큰이 만료됐다면 곧바로 재발급 요청을 할 수도 있다.
+
+12. 사용자는 Refresh Token과 Access Token을 함께 서버로 보낸다.
+
+13. 서버는 받은 Access Token이 조작되지 않았는지 확인한후, Refresh Token과 사용자의 DB에 저장되어 있던 Refresh Token을 비교한다. Token이 동일하고 유효기간도 지나지 않았다면 새로운 Access Token을 발급해준다.
+
+14. 서버는 새로운 Access Token을 헤더에 실어 다시 API 요청 응답을 진행한다. 
