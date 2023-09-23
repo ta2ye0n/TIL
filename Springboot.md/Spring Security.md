@@ -70,3 +70,40 @@
 최종적으로 SecurityContextHolder는 세션 영역에 있는 SecurityContext에 Authentication 객체를 저장한다. 사용자 정보를 저장한다는 것은 스프링 시큐리티가 전통적인 `세션 - 쿠키 기반의 인증 방식을 사용`한다는 것을 의미한다
 
 ---
+### Spring Security 기본구조
+![](https://blog.kakaocdn.net/dn/buuCmH/btqD9juZn8b/hQ5fDjQRI0Eqff9yrBJIZk/img.png)
+
+**필터별 기능 설명**   
+
+- `SecurityContextPersistenceFilter`   
+SecurityContextRepository에서 SecurityContext를 로드하고 저장하는 일을 담당한다
+
+- `LogoutFilter`   
+로그아웃 URL로 지정된 가상URL에 대한 요청을 감시하고 매칭되는 요청이 있으면 사용자를 로그아웃시킨다
+
+- `UsernamePasswordAuthenticationFilter`   
+사용자명과 비밀번호로 이뤄진 폼기반 인증에 사용하는 가상 URL요청을 감시하고 요청이 있으면 사용자의 인증을 진행한다
+
+- `DefaultLoginPageGeneratingFilter`   
+폼기반 또는 OpenID 기반 인증에 사용하는 가상 URL에 대한 요청을 감시하고 로그인 폼 기능을 수행하는데 필요한 HTML을 생성한다
+
+- `BasicAuthenticationFilter`   
+HTTP 기본 인증 헤더를 감시하고 이를 처리함
+
+- `RequestCacheAwareFilter`   
+로그인 성공 이후 인증 요청에 의해 가로채어진 사용자의 원래 요청을 재구성하는데 사용한다
+> SecurityContextHolderAwareRequestFilter <br>HttpServleRequest를 HttpServletRequestWrapper를 상속하는 하위 클래스   
+(SecurityContextHolderAwareRequestWrapper)로 감싸서 필터 체인상 하단에 위치한 요청 프로세서에 추가 컨텍스트를 제공한다
+
+- `AnonymousAuthenticationFilter`   
+이 필터가 호출되는 시점까지 사용자가 아직 인증을 받지 못했다면 요청 관련 인증 토큰에서 사용자가 익명 사용자로 나타나게 된다
+
+- `SessionManagementFilter`<br>
+인증된 주체를 바탕으로 세션 트래킹을 처리해 단일 주체와 관련한 모든 세션들이 트래킹되도록 도와준다
+
+- `ExceptionTranslationFilter`<br>
+이 필터는 보호된 요청을 처리하는 동안 발생할 수 있는 거대한 예외의 기본 라우팅과 위임을 처리한다
+
+- `FilterSecuritylnterceptor`<br>
+이 필터는 권한부여와 관련한 결정을 AccessDecisionManger에게 위임해 권한부여 결정 및 접근 제어 결정을 쉽게 만들어준다
+---
