@@ -123,5 +123,72 @@ HTTP 기본 인증 헤더를 감시하고 이를 처리함
 **최대 세션 허용 개수를 초과하였을 경우의 처리 로직 2가지 전략**   
 1. 이전 사용자 세션 만료 전략   
 신규 로그인시 기존 로그인 계정의 세션이 만료되도록 설정하여 기존 사용자가 자원 접근시 세션만료가 된다
+
 2. 현재 사용자 인증 실패 전략   
 신규 사용자가 로그인 시도시 인증 예외 발생
+
+#### 세션 고정 보호
+```
+보호라는 말은 공격으로부터 막는다는 의미로, 악의적인 해커의 세션 고정 공격을 막기위한 대응 전략이다
+```
+![](https://user-images.githubusercontent.com/58545240/142721888-5c5f40e2-315a-4d14-b48d-6645708f734f.png)
+
+세션 고정 공격을 방지하기 위해 세션 고정 보호가 필요하다
+> 세션 고정 공격이란?   
+공격자가 서버에 접속을 해서 `JSSEIONID`를 발급받아서 사용자에게 자신이 발급받은 세션 쿠키를 심어놓게되면 사용자가 세션쿠키로 로그인 시도했을 경우 공격자는 같은 쿠키값으로 인증되어 있기 때문에 공격자는 사용자 정보를 공유하게 된다   
+> 세션 고정 보호란?   
+사용자가 공격자가 세션쿠키로 로그인을 시도하더라도 로그인시마다 새로운 세션ID를 발급하여 제공하게 되면, `JSSEIONID`가 다르기 때문에, 공격자는 같은 쿠키값으로 사용자 정보를 공유받을 수 없다
+
+**세션 고정 보호 설정하기**   
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    UserDetailsService userDetailsService;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+        http
+                .sessionManagement()
+                .sessionFixation().changeSessionId();// 기본값 -> 세션은 유지하되 세션아이디는 계속 새로 발급(servlet 3.1이상 기본 값)
+                                                     // none, migrateSession, newSession
+		}
+}
+```
+- none()   
+세션이 새로 생성되지 않고 그대로 유지되기 때문에 세션 고정 공격에 취약하다
+
+- migrateSession()   
+새로운 세션도 생성되고 세션아이디도 발급된다 (sevelt 3.1 이하 기본 값) + 이전 세션의 속성값들도 유지된다
+
+- newSession()   
+세션이 새롭게 생성되고, 세션아이디도 발급되지만, 이전 세션의 속성값들을 유지할 수 없다
+
+**세션 정책**   
+인증처리를 할 때 꼭 스프링 시큐리티에서 세션을 생성할 필요는 없고, 외부 서비스를 통해 인증 토큰을 발갑하는 방식을 사용 할 수도 있다
+
+**세션 정책 설정하기**
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    UserDetailsService userDetailsService;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+        http
+                .sessionManagement()// 세션 관리 기능이 작동함.
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+		}
+}
+```
+- SessionCreationPolicy.Always : 스프링 시큐리티가 항상 세션 생성 
+  
+- SessionCreationPolicy.IF_REQUIRED : 스프링 시큐리티가 필요 시 생성(default)   
+- SessionCreationPolicy.Never : 스프링 시큐리티가 생성하지 않지만 이미 존재하면 사용   
+- SessionCreationPolicy.Stateless : 스프링 시큐리티가 생성하지 않고 존재해도 사용하지 않음
+-> JWT 토큰방식을 사용할 때는 Stateless 정책을 사용한다
