@@ -187,8 +187,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 - SessionCreationPolicy.Always : 스프링 시큐리티가 항상 세션 생성 
-  
+
 - SessionCreationPolicy.IF_REQUIRED : 스프링 시큐리티가 필요 시 생성(default)   
 - SessionCreationPolicy.Never : 스프링 시큐리티가 생성하지 않지만 이미 존재하면 사용   
 - SessionCreationPolicy.Stateless : 스프링 시큐리티가 생성하지 않고 존재해도 사용하지 않음
 -> JWT 토큰방식을 사용할 때는 Stateless 정책을 사용한다
+
+#### 세션 제어 필터 (SessionManagementFilter, ConcurrentSessionFilter)
+
+**SessionManagementFilter**   
+1. `세션관리` -> 인증 시 사용자의 세션정보를 `등록, 조회, 삭제` 등의 세션 이력을 관리
+
+2. `동시적 세션 제어` -> 동일 계정으로 접속이 허용되는 최대 세션수를 제한
+3. `세션 고정 보호` -> 인증 할 때마다 세션 쿠키를 새로 발급하여 공격자의 쿠키 조작을 방지
+4. `세션 생성 정책` -> `Always, if_required, Never, Stateless`
+
+**ConcurrentSessionFilter**    
+- 매 요청 마다 현재 사용자의 세션 만료 여부 체크
+- 세션이 만료되었을 경우 즉시 만료 처리
+- session.isExired() == true
+    - 로그아웃 처리
+    - 즉시 오류 페이지 응답(This session has been expired)
+
+**SessionManagementFilter, ConcurrentSessionFilter - Flow**   
+![](https://user-images.githubusercontent.com/58545240/142767019-ae6c7acf-13cd-46a1-8f27-e7ab968a8597.png)
+
+1. Login 시도   
+2. 최대 세션 허용 개수 확인    
+    -> 최대 세션 허용 개수가 초과되었을 경우 정책별 로직 수행(이전 사용자 세션 만료/ 현재 사용자 인증 실패) : session.expireNow()
+3. 이전사용자가 자원접근(Request) 시도
+4. ConcurrentSessionFilter에서 이전 사용자의 세션이 만료되었는지 확인   
+    -> SessionManagementFilter 안의 설정 참조
+5. 로그아웃 처리 후 오류 페이지 응답   
+    -> This session has been expired
+
+**SessionManagementFilter, ConcurrentSessionFilter - sequence diagram**   
+![](https://cdn.inflearn.com/public/files/courses/324591/dda4eeff-9e4c-454f-a446-ebb13b3d077b/arch2.jpg)
