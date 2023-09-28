@@ -223,3 +223,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 **SessionManagementFilter, ConcurrentSessionFilter - sequence diagram**   
 ![](https://cdn.inflearn.com/public/files/courses/324591/dda4eeff-9e4c-454f-a446-ebb13b3d077b/arch2.jpg)
+
+---
+### 예외처리 및 요청 캐시 필터 
+```
+ExceptionTranslationFilter, RequestCacheAwareFilter
+```
+`SpringSecurity`가 관리하는 보안 필터중 마지막 필터가 `FilterSecurityInterceptor`이고, 바로 전 필터가 `ExceptionTranslationFilter`이고 해당 필터에서 사용자의 요청을 받을 때, 그 다음 필터로 그 요청을 전달할 때 `try-catch`로 감싸서 `FilterSecurityInterceptor`를 호출하고 있고, 해당 필터에서 생기는 인증 및 인가 예외는 `ExceptionTranslationFilter`로 `throw` 하고 있다
+
+**AuthenticationException**   
+- 인증 예외 처리
+1. AuthenticationEntryPoint 호출   
+-> 로그인 페이지 이동, `401(Unauthorized)` 오류 코드 전달 등
+2. 인증 예외가 발생하기 전의 요청 정보를 저장   
+-> `RequestCache` - 사용자의 이전 요청 정보를 세션에 저장하고 이를 꺼내 오는 캐시메커니즘   
+-> `SavedRequest` - 사용자가 요청했던 request 파라미터 값들, 그 당시의 헤더값들 등이 저장
+
+**AccessDeniedException**   
+- 인가 예외 처리
+    - AccessEdniedHandler 에서 예외 처리하도록 제공
