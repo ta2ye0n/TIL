@@ -242,3 +242,21 @@ ExceptionTranslationFilter, RequestCacheAwareFilter
 **AccessDeniedException**   
 - 인가 예외 처리
     - AccessEdniedHandler 에서 예외 처리하도록 제공
+
+FLOW   
+![](https://velog.velcdn.com/images%2Fgmtmoney2357%2Fpost%2F166392b2-0c6a-419b-9428-903d8cc4ed2f%2FexceptionFilter.PNG)   
+1. 익명 사용자가 /user에 접근을 시도한다고 가정한다. 
+2. FilterSecurityInterceptor 권한 필터가 해당 요청(/user)을 받았지만, 해당 유저는 인증을 받지 않은 상태.
+3. 해당 필터는 인증 예외를 발생한다. 
+    → 정확히는 인가 예외를 던진다. 왜냐하면 해당 사용자는 `익명(anonymouse)사용자`이기에 인증을 받지 않은 상태라서 `인가 예외(AccessDeniedException)`로 빠진다. 
+4. 인가 예외(AccessDeniedException)는 익명 사용자이거나 RememberMe사용자일 경우 AccessDeniedHandler를 호출하지 않고 AuthenticationException 에서 처리하는 로직으로 보내게 된다. 
+5. 인증 예외 (AuthenticationException) 두 가지 일을 한다.
+    a. AuthenticationEntryPoint 구현체 안에서 login페이지로 리다이렉트 한다. (인증 실패 이후)
+    → Security Context를 null로 초기화해주는 작업도 해준다. 
+    b. 예외 발생 이전에 유저가 가고자 했던 요청정보를 DefaultSavedRequest객체에 저장하고 해당 객체는 Session에 저장되고 Session 에 저장하는 역할을 HttpSessionRequestCache에서 해준다. 
+
+> 1. 인증절차를 밟은 일반 유저가 /user 자원에 접근을 시도하는데 해당 자원에 설저오딘 허가 권한이 ADMIN일 경우
+> 2. 권한이 없기 때문에 인가 예외 발생
+> 3. AccessDeniedException이 발생한다
+> 4. AccessDeniedHandler 호출해서 후속작업을 처리한다
+>    -> 보통은 denied 페이지로 이동한다
