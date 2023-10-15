@@ -60,7 +60,10 @@ EX)
 - domain을 담당하는 directory
 
 #### global
-- 프로젝트 전방위적으로 사용되는 객체들로 구성
+- 특정 domain에 종속되지 않고, 프로젝트 전방위적으로 사용되는 객체들로 구성
     - config : 스프링 각종 설정
     - common : 공통으로 사용되는 Value 객체들
     - auth : 인증/인가에 사용되는 설정
+    - error : 공통 exception, error와 관련된 클래스로 구성
+    - infra : 외부 모듈, api 등을 사용하는 클래스로 구성
+    - util : 공통 util성 클래스 들로 구성
