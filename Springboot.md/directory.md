@@ -58,6 +58,12 @@ EX)
 
 #### domain
 - domain을 담당하는 directory
+    - api
+    - application : 주로 service 클래스들이 존재한다 DB 트랜잭션이 일어나며, 주된 비즈니스 로직을 담당
+    - dao : dao, repository 클래스들로 구성
+    - domain : entity 클래스들로 구성
+    - dto : dto 클래스들로 구성
+    - exception : exception 클래스들로 구성
 
 #### global
 - 특정 domain에 종속되지 않고, 프로젝트 전방위적으로 사용되는 객체들로 구성
