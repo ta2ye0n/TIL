@@ -154,3 +154,71 @@ Stream<T> peek(Consumer<? super T> action);
 `forEach()` 메서드는 최종 연산이기 때문에 결과를 확인할 수 있으나 `peek()`는 중간 연산이기 때문에 어떠한 최종 연산도 하지 않으면 아무것도 확인할 수 없다
 > 보통 잘 사용되지 않는 메서드이다
 ---
+### 최종 연산 (terminal operation)
+지연(lazy) 되었던 중개 연산들이 모두 수행된다
+이렇게 최종 연산 시에 모든 요소를 소모한 해당 스트림은 더는 사용할 수 없게 된다
+
+```
+1. 요소의 출력 : forEach()
+2. 요소의 소모 : reduce()
+3. 요소의 검색 : findFirst(), findAny()
+4. 요소의 검사 : anyMatch(), allMatch(), noneMatch()
+5. 요소의 통계 : count(), min(), max()
+6. 요소의 연산 : sum(), average()
+7. 요소의 수집 : collect()
+```
+
+#### forEach()
+```java
+요소 전체를 반복한다
+
+Consumer<? super Controller> action
+```
+- for-loop와 forEach 차이
+    - `forEach` : 각 수행에 대해 다음 수행을 막을 뿐, 결국 모든 요소의 조건을 확인한 후에야 종료한다
+    - `for-loop` : break; 로 인해 다른 요소의 조건 검사를 하지 않고 바로 수행이 끝난다
+
+#### reduce()
+```
+스트림의 요소들을 하나의 데이터로 만드는 작업을 수행한다
+```
+```java
+파라미터를 3개까지 받을 수 있음
+Optional<T> reduce(BinaryOperator<T> accumulator)
+
+T reduce(T identity, BinaryOperator<T> accumulator)
+
+<U> U reduce(U identity, BiFunction<U,? super T,U> accumulator, BinaryOperator<U> combiner)
+```
+
+#### findFirst()
+```
+조건에 일치하는 요소들 주에 스트림에서 순서가 가장 앞에 있는 요소를 리턴한다
+```
+
+#### findAny()
+```
+스트림에서 가장 먼저 탐색되는 요소를 리턴한다
+```
+
+`findFirst` 와 `findAny`차이   
+스트림을 직렬로 처리할 때에는 동일한 요소를 리턴하며 차이점이 없다   
+하지만 병렬로 할 때는 차이가 있다
+- `findFirst` : 여러 요소가 조건에 부합해도 스트림의 순서를 고려하여 가장 앞에 있는 요소를 리턴
+- `findAny` : 스트림을 처리할 때 가장 먼저 찾은 요소를 리턴
+
+#### anyMatch()
+```
+스트림에서 특정 조건을 만족하는 요소가 하나라도 있는 경우 true를 반환하고 더 이상 실행되지 않는다
+```
+
+#### allMatch()
+```
+스트림에서 모든 요소가 특정 조건을 만족하는 경우 true를 반환한다
+특정 조건을 만족하지 않는다면, false를 반환하고 더 이상 실행되지 않는다
+```
+
+#### noneMatch()
+```
+스트림에서 특정 조건을 만족하는 요소가 하나라도 있는 경우 false를 반환하고 더 이상 실행되지 않는다
+```
