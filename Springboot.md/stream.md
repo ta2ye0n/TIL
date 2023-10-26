@@ -222,3 +222,43 @@ T reduce(T identity, BinaryOperator<T> accumulator)
 ```
 스트림에서 특정 조건을 만족하는 요소가 하나라도 있는 경우 false를 반환하고 더 이상 실행되지 않는다
 ```
+
+#### conunt()
+```java
+해당 스트림의 요소의 총 개수를 long 타입의 값으로 반환한다
+
+long count()
+```
+
+#### max()
+```java
+해당 스트림의 요소 중에서 가장 큰 값을 가지는 요소를 참조하는 Optional 객체를 반환한다
+만약 스트림이 비어있다면 빈 Optional을 반환한다
+
+Optional<T> max(Comparator<? super T> comparator)
+```
+
+#### min()
+```java
+해당 스트림의 요소 중에서 가장 wkrdms 값을 가지는 요소를 참조하는 Optional 객체를 반환한다
+만약 스트림이 비어있다면 빈 Optional을 반환한다
+
+Optional<T> min(Comparator<? super T> comparator)
+```
+
+#### sum()
+```
+기본 타입 스트림의 모든 요소에 합을 반환한다
+```
+
+#### average()
+```
+기본 타입 스트림의 모든 요소에 평균을 Optional 객체를 반환한다
+```
+
+#### collect()
+```
+최종 처리 단계에서 요소들을 수집한다
+
+필요한 요소만 컬렉션으로 담을 수 있고, 요소들을 그룹핑한 후집계(리덕션) 할 수 있다
+```
