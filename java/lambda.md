@@ -45,3 +45,62 @@
 - 람다 `stream`사용시 단순 for문 혹은 while문 사용시 `성능이 떨어진다`
 
 - 불필요하게 너무 사용되면 오히려 `가독성을 떨어 뜨릴 수` 있다
+
+---
+### 람다 표현식
+- 람다는 `매개변수 화살표(->) 함수몸체`로 이용하여 사용 할 수 있다
+- 함수몸체가 단일 실행문이면 `괄호{}를 생략` 할 수 있다
+- 함수몸체가 `return문으로만 구성`되어 있는 경우 괄호{}를 생략 할 수 없다
+
+```java
+// 정상적인 유형
+() -> {}
+() -> 1
+() -> { return 1; }
+
+(int x) -> x + 1
+(x) -> x + 1
+x -> x + 1
+(int x) -> { return x + 1}
+x -> {return x + 1;}
+
+(int x, int y) -> x + y
+(x, y) -> x + y
+(x, y) -> { return x + y; }
+
+(String lam) -> lam.length()
+lam -> lam.length()
+(Thread lamT) -> { lamT.start(); }
+lamT -> { lamT.start(); }
+
+// 잘못된 유형 선언된 type과 선언되지 않은 type을 같이 사용 할 수 없다
+(x, int y) -> x + y
+(x, final y) -> x + y
+```
+
+**람다식 예제**   
+```java
+// 기본 자바 문법
+new Thread(new Runnable() {
+    @Override
+    public void run() {
+        System.out.println("lambda");
+    }
+}).start();
+```
+```java
+// 람다식 문법
+new Thread(()-> {
+    System.out.println("lambda");
+}).start();
+```
+람다식을 사용하면 코드가 간결해지고 가독성도 좋아진걸 확인 할 수 있다
+
+---
+### 함수형 인터페이스
+```
+@Functionallneterface
+
+구현해야 할 추상 메서드가 하나만 정의된 인터페이스
+```
+자바 컴파일러는 명시된 함수형 인터페이스에 `두 개 이상의 메서드`가 선언되면 `오류`를 발생시킨다
