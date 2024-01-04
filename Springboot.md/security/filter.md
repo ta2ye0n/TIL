@@ -35,6 +35,22 @@ Spring Security에서 `가장 핵심이 되는 기능`을 제공하며, 거의 �
 
 ![](https://velog.velcdn.com/images/zini9188/post/4cd9f848-8d05-490c-a112-6a220ea942d3/image.png)
 
+---
+**Application Context 초기화**   
+```
+Application Context 초기화 과정에서 사용자가 정의한 Security Filter Chain이 생성된다
+```
+Spring Security 에서는 인증, 인가에 대한 처리를 여러개의 필터를 통해 연쇄적으로 실행하여 수행한다
+이때 상황에 따라 필요한 필터가 있고 굳이 필요 없는 필터가 있다
+이걸 설정 클래스를 통해 `Spring Security`에 대한 전반적인 관리 및 제어를 할 수 있다
+
+기존에는 Spring Security을 위한 `설정 클래스임을 정의`하기 위해 `WebSecurityConfigurerAdapter`를 상속했지만 현재는 `SecurityFilterChain` 빈을 직접 만들어야 한다
+
+*정리*   
+SecurityFilterChain Bean 을 반환하는 filterchain 메서드의 매개변수인 `HttpSecurity`을 통해 사용할 필터와 사용자가 `직접 정의한 필터를 정의`할 수 있다
+해당 설정을 바탕으로, 애플리케이션 구동시 `Security Filter Chain`이 구성되어 실행된다
+
+---
 **Delegating Filter Proxy**   
 ```
 Filter 인터페이스를 구현하는 구현 클래스
@@ -45,6 +61,7 @@ Filter 인터페이스를 구현하는 구현 클래스
 DelegatingFilterProxy는 `Servlet 스펙에 있는 기술`이기 때문에 Servlet Container 에서만 생성되고 실행된다
 Spring의 Spring Container 와는 다르기 때문에 Spring Bean으로 주입하거나 Spring에서 사용되는 기술을 `Servlet에서 사용할 수 없다`
 
+---
 **FilterChainProxy**   
 ```
 보안을 위한 작업을 처리하는 필터의 모음
@@ -56,3 +73,34 @@ Spring의 Spring Container 와는 다르기 때문에 Spring Bean으로 주입�
 URL 별로 필터 체인을 등록할 수 있는데, 이때 필터 체인의 우선순위는 `FilterChainProxy`에 의해 결정되며 가장 먼저 매칭된 필터 체인을 사용한다
 > `/api/**`과 `/**` 필터 체인이 있고 `/api/message` URL이 들어오는 경우, 가장 먼저 매칭된 `/api/**` 필터 체인을 사용   
 `/message/**` URL의 경우, 가장 먼저 매칭되는 `/**` 필터체인을 사용
+
+---
+### Filter, Filter Chain 구현
+```java
+Ex)
+
+public class FirstFilter implements Filter {
+     public void init(FilterConfig filterConfig) throws ServletException {
+        Filter.super.init(filterConfig);      
+     }
+     
+     public void doFilter(ServletRequest request, ServletResponse response,
+                          FilterChain chain)
+                          throws IOException, ServletException { 
+        chain.doFilter(request, response);
+     }
+     
+     public void destroy() {
+        Filter.super.destroy();
+     }
+  }
+```
+- `init()` 메서드   
+생성한 필터에 대한 초기화 작업을 진행
+- `doFilter()` 메서드   
+`chain.doFilter()` 이전에서 전처리 작업에 대해 구현   
+`chain.doFilter()` 이후에서 후처리 작업에 대해 구현
+
+- `destroy()` 메서드   
+필터가 컨테이너에서 종료될 때 호출   
+필터가 사용한 자원을 반납하는 처리 등의 로직을 작성
