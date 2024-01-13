@@ -37,9 +37,11 @@
     - 인증에 성공하면, AuthenticationProvider에서 인증된 인증용 객체를 `Authentication 객체`에 담아 `AuthenticationManager`에게 전달한다
     - AuthenticationManager은 다시 `AuthenticationFilter`에게 전달한다
 
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fn9A86%2FbtrHqPKpvCo%2FeIh8O89SFDz9MkmaeisM01%2Fimg.png)
+
 7. AuthenticationSuccessHandler 실행
     - AuthenticationFilter는 `SecurityContextHolder`라는 곳에 담은 후, AuthenticationSuccessHandler을 실행한다
         - 실패시 `AuthenticationFailureHandler` 실행
         - 이후 인증된 사용자가 다시 요청을 보내게 되면, SecurityContext 객체 안에 Authentication이 있는지 확인 후 있다면 바로 인과처리로 넘어감으로 인해 효율 적 처리가 가능
 
-
+---
