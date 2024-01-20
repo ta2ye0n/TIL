@@ -15,6 +15,87 @@ Decorator : 추상화된 장식자 클래스
 ConcreteDecorator : 구체적인 장식자 클래스
 ```
 ---
+### 패턴 흐름
+클래스 구조
+```java
+// 원본 객체와 장식된 객체 모두를 묶는 인터페이스
+interface IComponent {
+    void operation();
+}
+
+// 장식될 원본 객체
+class ConcreteComponent implements IComponent {
+    public void operation() {
+    }
+}
+
+// 장식자 추상 클래스
+abstract class Decorator implements IComponent {
+    IComponent wrappee; // 원본 객체를 composition
+
+    Decorator(IComponent component) {
+        this.wrappee = component;
+    }
+
+    public void operation() {
+        wrappee.operation(); // 위임
+    }
+}
+
+// 장식자 클래스
+class ComponentDecorator1 extends Decorator {
+
+    ComponentDecorator1(IComponent component) {
+        super(component);
+    }
+
+    public void operation() {
+        super.operation(); // 원본 객체를 상위 클래스의 위임을 통해 실행하고
+        extraOperation(); // 장식 클래스만의 메소드를 실행한다.
+    }
+
+    void extraOperation() {
+    }
+}
+
+class ComponentDecorator2 extends Decorator {
+
+    ComponentDecorator2(IComponent component) {
+        super(component);
+    }
+
+    public void operation() {
+        super.operation(); // 원본 객체를 상위 클래스의 위임을 통해 실행하고
+        extraOperation(); // 장식 클래스만의 메소드를 실행한다.
+    }
+
+    void extraOperation() {
+    }
+}
+```
+클래스 흐름
+```java
+public class Client {
+    public static void main(String[] args) {
+        // 1. 원본 객체 생성
+        IComponent obj = new ConcreteComponent();
+
+        // 2. 장식 1 하기
+        IComponent deco1 = new ComponentDecorator1(obj);
+        deco1.operation(); // 장식된 객체의 장식된 기능 실행
+
+        // 3. 장식 2 하기
+        IComponent deco2 = new ComponentDecorator2(obj);
+        deco2.operation(); // 장식된 객체의 장식된 기능 실행
+
+        // 4. 장식 1 + 2 하기
+        IComponent deco3 = new ComponentDecorator1(new ComponentDecorator2(obj));
+    }
+}
+```
+데코레이터 된 객체는 메서드를 호출할 때 장식한 메서드를 호출하여 반환 로직에 추가적으로 더 덧붙여서 `결과값을 반환`할 수 있다
+
+---
 ### 장단점
 **장점**   
 - 데코레이터를 사용하면 서브 클래스를 만들때보다 훨씬 더 `유연하게 기능을 확장`할 수 있다
