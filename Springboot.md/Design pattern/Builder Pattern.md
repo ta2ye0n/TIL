@@ -32,3 +32,21 @@ GoF와 구분하기 위해 `심플 빌더 패턴(Simple Builder Pattern)` 이라
 4. `메모리 누수 문제` 때문에 static으로 내부 클래스를 정의해줘야한다
 
 ---
+### 디렉터 빌더 패턴(GOF)
+```
+복잡한 객체의 생성 알고리즘과 조립 방법을 분리하여 빌드 공정을 구축하는것이 목적이다
+```
+빌더를 받아 조립 방법을 정의한 클래스를 `Director`라고 부른다
+
+심플 빌더 패턴은 하나의 대상 객체에 대한 생성만을 목적을 두지만, 디렉터 빌더 패턴은 `여러가지의 빌드 형식을 유연하게 처리하는 것`에 목적을 둔다
+어쩌면 일반적인 패턴을 고도화 시킨 패턴이라고 볼 수도 있다
+
+**Director 빌더 패턴 구조**   
+![](https://velog.velcdn.com/images/froajnzd/post/e17b96e8-456e-4696-9214-372be5f17bc2/image.png)
+```
+Builder : 빌더 추상 클래스
+ConcreteBuilder : Builder의 구현체 Product 생성을 담당
+Director : Builder에서 제공하는 메서드들을 사용해 정해진 순서대로 Product 생성하는 프로세스를 정의
+Product : Director가 Builder로 만들어낸 결과물
+```
+클라이언트가 직접 빌더의 모든 API를 `사용하는게 아닌`, Director을 통해서 간단하게 `인스턴스를 얻어`올 수 있고 코드를 `재사용`할 수 있도록 한다
