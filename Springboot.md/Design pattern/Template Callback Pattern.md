@@ -25,3 +25,47 @@
     > 그렇다고 해서 결합도를 `낮추는 행위`을 할 필요는 없다
 
 ---
+### 콜백(Callback)
+```
+하나의 오브젝트르 다른 오브젝트의 메서드에 매개변수로 넘거주는 실행가능한 코드
+```
+코드가 호출은 되는데 코드를 `넘겨준 곳의 뒤`에서 실행된다
+필요에 따라 즉시 실행할 수도 있고 나중에 실행할 수도 있다
+
+**자바**   
+자바의 메서드는 일급 객체가 아니기 때문에 콜백 행위를 하지 못하였다
+하지만 자바 8에서 등장한 `람다 함수`를 통해 콜백을 구현할 수 있게 되었다
+```java
+interface IAdd {
+    int add(int x, int y);
+}
+ 
+public class Main {
+    public static void main(String[] args) {
+    	int n = result( (x, y) -> x + y ); // 메소드의 매개변수에 람다식을 전달
+        System.out.println(n); // 3
+    }
+    
+    public static int result(IAdd lambda) {
+    	return lambda.add(1,2);
+    }
+}
+```
+
+**자바 스크립트**   
+간단하게 함수를 변수에 할당하고 함수의 인자로 넘겨주면 콜백이다
+```javascript
+// 콜백 함수
+const callback = function(num) {
+	return ++num;
+}
+
+// 콜백을 함수의 매개변수로 넘김
+function increaseNum(num, callback) {
+	let result = callback(num);
+    console.log(result);
+}
+
+increaseNum(1, callback); // 2
+```
+---
