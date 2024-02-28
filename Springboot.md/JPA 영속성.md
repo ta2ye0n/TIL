@@ -83,3 +83,18 @@ em.persist(member);
 em.remove(member);
 ```
 ---
+### EntityManagerFactory / Entity Manager
+데이터 베이스를 하나만 사용하는 애플리케이션은 보통 EntityManagerFactory를 하나만 생성한다
+EntityManagerFactory는 `여러 EntityManger를 생성`하는 객체이다
+
+**차이점**   
+- EntityManagerFactory   
+생성하는데 비용이 크기 때문에 전체에서 `한 번`만 생성해 공유하도록 설계되어 있다
+여러 스레드가 `동시에 접근`해도 안전하다 따라서 서로 다른 스레드 간에 공유가 가능하다
+
+- EntityManager   
+생성하는데 비용이 거의 들지 않는다
+여러 스레드가 동시에 접근하면 `동시성 문제`가 발생하기 때문에 스레드 간에 `절대 공유하지 않는다`
+
+> Entity Manager는 데이터베이스 연결이 꼭 필요한 시점까지(보통 트랜잭션을 시작할 때) 커넥션을 얻지 않는다
+---
