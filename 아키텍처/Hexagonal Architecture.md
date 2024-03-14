@@ -51,3 +51,28 @@ DIP를 통해 의존성이 도메인에서 밖으로 나가는 부분이 없으�
 외부 - 내부 영역에서 기술을 분리하여 구성한 영역이고 내부 영역 설계 이후 설계
 ```
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FtUu8e%2FbtrZboajmwm%2FI7a6ea13LeLfjdvHcCAk3K%2Fimg.png)   
+
+**포트와 어댑터**   
+
+- `포트`   
+Port는 application 입장에서 consumer, 또는 application에서 나가거나 / 들어오는 `end point`라고 볼 수 있다   
+포트는 내부 비즈니스 영역을 `외부 영역에 노출한 API`이고 인바운드(Inbound) / 아웃바운드(Outbound) 포트로 구분한다
+    ```
+    인바운드 포트 - 내부 영역 사용을 위해 노출된 API
+    아웃바운드 포트 - 내부 영역이 외부 영역을 사용하기 위한 API
+    ```
+
+- `어댑터`   
+인프라나 web과 같은 저수준 layer들이 도메인 로직에 접근할 수 있는 포트를 사용할 수 있도록 한다
+
+- `Primary (Driving) Adapters`   
+위의 다이어그램에서 왼쪽에 있는 adapter, application을 동작시키는(Driving) 역할을 한다
+Driving Adapter에는 주로 UI 쪽이 들어가고 인바운드 포트를 사용한다
+
+- `Secondary (Driven) Adapters`   
+위의 다이어그램에 있는 adapter, application에 의해 동작되는 (Driven) 역할을 가진 부분이다
+주로 인프라와 연결되는 부분이 들어가고 아웃바운드 포트를 사용한다
+
+Primary adapter에 의해 Secondary adapter들이 호출된다
+
+---
