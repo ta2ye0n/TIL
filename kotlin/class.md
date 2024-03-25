@@ -86,3 +86,44 @@ private로 선언한 경우에도 가능하다
 
 > 누수가 위험한 이유 : 암묵적(프로그래머가 발견하기 전까지 알 수 없는 것)인 것이기 때문
 ---
+### 실드 클래스
+```
+미리 만들어 놓은 자료형을 묶어서 제공하는 클래스
+```
+`sealed`라는 키워드를 사용하며 추상클래스와 같이 객체를 만들 수 없다
+생성자도 기본적으로 `private`이며 `private가 아닌 다른 생성자는 허용하지 않는다`   
+`같은 파일 안에서는 상속이 가능`하나 다른 파일에서는 `불가능`하다
+이때 `open` 키워드를 사용하면 된다 
+
+실드 클래스는 `상태를 정의`하고 `관리`하는데 주로 사용된다
+```kotlin
+// 실드 클래스 선언 방법 첫번째
+sealed class Result {
+    open class Success (val message: String) : Result()
+    class Error(val code: Int, val message: String) : Result()
+}
+class Status: Result() // 실드 클래스 상속은 같은 파일에서만 가능
+class Inside: Result.Success("Status") // 내부 클래스 상속
+
+// 실드 클래스 선언 방법 두번째
+sealed class Result
+class Error(val code: Int, val message: String) : Result()
+
+class Status: Reuslt()
+class Inside: Success("Status")
+```
+---
+### 열거형 클래스(Enum Class)
+```
+여러 개의 상수를 선언하고 열거된 값을 조건에 따라 선택할 수 있는 특수한 클래스
+```
+`자료형이 동일한 상수`를 나열할 수 있다
+하지만 `한 가지 자료형`만 나열 할 수 있다
+```kotlin
+ex)
+
+enum class DayOfWeek(val num : Int) { // 주생성자
+    Monday(1), Tuesday(2), ... , Sunday(7)
+}
+```
+---
