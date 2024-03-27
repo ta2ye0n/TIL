@@ -59,3 +59,63 @@ for (i in 0 until list.count())
     print(list[i])
 ```
 ---
+### while 문
+**while 문**   
+```kotlin
+var a: Int = 1
+while(a <= 10) {
+    print("${a++}")
+}
+```
+
+**do-while 문**   
+```kotlin
+var b: Int = 10
+do {
+    print("${b--}")
+} while (b > 0)
+```
+
+> 다른 언어들과 거의 유사함
+---
+### repeat
+```kotlin
+repeat(반복횟수) {
+    반복할 내용
+}
+```
+내부적으로 `for문`을 사용하는 `inline 함수`이다
+인자로 `반복횟수`와 `action(반복할 함수)`를 전달하여 실행한다
+
+```kotlin
+ex)
+repeat(3) { index ->
+    println("Hello World !! $index")
+}
+
+// 이렇게도 사용 가능
+println("Hello".repeat(3))
+```
+---
+### while vs repeat
+while문과 비교했을 때 repeat 함수는 `반복 횟수가 명확하게 제공`되기 대문에 `가독성`면에서 장점이 있다
+또한 무한 루프에 빠지는 실수를 방지할 수 있다
+
+- while 문을 주로 사용하는 상황
+    - `복잡한 종료 조건`을 가질 경우
+    - 조건이 loop 내부에서 `동적으로 변경`되는 경우
+    - `무한루프`가 필요한 경우
+
+반복 횟수가 명확하게 정해져있을 경우에는 `repeat`을 사용하는게 좋다
+
+---
+### foreach
+collection이나 배열 등의 요소를 반복하는데 사용되는 함수
+```kotlin
+배열(coolection).forEach {println(it)}
+```
+
+for문보다 직관적이고 `가독성면`에서 좋다
+만약 index 값이 필요하다면 `forEachIndexed`를 사용하면 된다
+
+---
