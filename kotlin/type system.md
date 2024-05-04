@@ -54,3 +54,19 @@ var d: Int = b ?: 3
 // var d: Int = b -> error
 ```
 ---
+### as? (안전한 캐스트)
+```
+as? 연산자는 어떤 값을 지정한 타입으로 캐스트하고, 변환할 수 없으면 null을 반환한다
+```
+
+자바 타입 캐스트와 마찬가지로 대상 값을 as로 지정한 타입으로 바꿀 수 없다면 `ClassCastException`일 발생한다
+> 자바에서는 보통 `is`를 통해 미리 as로 변환 가능한 타입인지 검사한다
+
+```kotlin
+ex)
+foo as? Type
+```
+- foo is Type이면 foo는 `Type으로 변화`
+- foo !is Type 이면 `null 반환`
+
+---
