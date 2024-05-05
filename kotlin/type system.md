@@ -70,3 +70,22 @@ foo as? Type
 - foo !is Type 이면 `null 반환`
 
 ---
+### let 함수
+```
+안전한 호출 연산자와 함께 사용하면 원하는 식을 평가해서
+결과가 널인지 검사한 다음에 그 결과를 변수에 넣는 작업을 한다
+```
+간단한 식을 사용해 한번에 처리 가능하다
+
+```kotlin
+fun sendEmailTo(email: String) {
+    println("Sending email to $email")
+}
+
+fun main(args: Array<String>) {
+    var email: String? = "yole@example.com"
+//    sendEmailTo(email) -> error
+    email?.let { sendEmailTo(it) }
+}
+```
+---
