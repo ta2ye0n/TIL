@@ -23,3 +23,16 @@ inline fun <T> T.apply(block : T.() -> Unit): T {
 - 확장 함수이기 때문에 객체 컨텍스트를 `receiver(this)`로 이용이 가능하다
 
 ---
+### run
+```kotlin
+inline fun <T,R> T.run(block : T.() -> R) : R {
+		return block()
+    }
+```
+- 반환하는 값이 객체가 아닌 `스코프 내에 실행된 값`이다
+- 그러므로 특정 객체의 출력하거나 계산값으로 활용하는 등의 `핸들링을 할 때 사용`한다
+
+- 확장함수이기 때문에 `receiver(this)`로 이요이 가능하다
+- safe call(.?)을 붙여 `non-null`일 때만 실행이 가능하다
+
+---
