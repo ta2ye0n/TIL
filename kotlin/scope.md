@@ -36,3 +36,26 @@ inline fun <T,R> T.run(block : T.() -> R) : R {
 - safe call(.?)을 붙여 `non-null`일 때만 실행이 가능하다
 
 ---
+### with
+```kotlin
+inline fun <T, R> with(receiver : T, block: T.() -> R) : R{
+		return receiver.block()
+   }
+```
+- 확장 함수가 아니므로 컨텍스트 객체를 `argument`로 전달하며 람다의 내부에서는 확장함수로 적용되어 `reciever(this)`로 사용이 가능하다
+
+---
+### also
+```kotlin
+inline fun <T> T.also(block: (T) -> Unit) : T {
+		block(this)
+        return this
+ }
+```
+- `생성된 인스턴스`를 반환한다
+
+- `it`를 사용해 프로퍼티에 접근이 가능하다
+- 객체의 프로퍼티를 전혀 사용하지 않거나 변경하지 않고 사용하는 경우에 유용하다
+    > ex) 객체의 데이터 유효성 확인, 디버그, 로깅 등의 부가적인 목적
+
+---
