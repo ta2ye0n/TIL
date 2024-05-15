@@ -59,3 +59,15 @@ inline fun <T> T.also(block: (T) -> Unit) : T {
     > ex) 객체의 데이터 유효성 확인, 디버그, 로깅 등의 부가적인 목적
 
 ---
+### let
+```kotlin
+inline fun<T,R> T.let(block : (T) -> R) : R{
+		return block(this)
+  }
+```
+- `최종 실행 결과`를 반환한다
+
+- `it`을 사용해 프로퍼티에 접근이 가능하다
+- 지정된 값이 null이 아닌 경우에 코드를 실행해야 하는 경우 및 nullable 객체를 다른 nullable 객체로 변환하는 경우 사용한다
+
+---
