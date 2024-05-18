@@ -29,3 +29,25 @@ create table 테이블명 (
 |CLOB|문자데이터|
 
 ---
+### Alter
+```
+테이블의 특정 컬럼을 삭제하거나 추가하거나 변경할 때 사용하는 명령어
+```
+```sql
+alter table 테이블
+명령어문 입력;
+
+-- 명령어 : add, modify, drop 등
+```
+
+alter를 통해 변경하면 `rollback, flashback`을 통해 복구가 어렵다
+
+**alter table 구문을 통해 테이블 읽기 전용 테이블로 변환**   
+```sql
+alter table 테이블명 READ ONLY;
+```
+다시 쓰기 가능한 테이블로 변환하려면?
+```sql
+alter table 테이블명 READ WRITE;
+```
+---
