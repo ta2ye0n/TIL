@@ -51,3 +51,8 @@ alter table 테이블명 READ ONLY;
 alter table 테이블명 READ WRITE;
 ```
 ---
+### Drop
+```
+테이블을 삭제하는 명령어
+```
+rollback이 블가능하고 flashback은 가능하다
