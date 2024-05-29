@@ -39,3 +39,33 @@ fun main() {
 $123
 $number
 ```
+
+`${}`의 중괄호 안에 식을 넣으면 해당 식의 결과를 `String`으로 변환하여 문자열에 값을 삽입한다
+```kotlin
+// ex)
+fun main() {
+    val a = 10
+    val b = 20
+
+    println("a + b: ${a + b}")
+    println("${if (a > b) a else b}")
+}
+
+// 출력
+a + b: 30
+20
+```
+
+문자열에 특수 문자를 넣어야 하는 경우 `역슬래시(\)`를 통해 표현하거나 `문자열 리터럴(""")`을 사용해야 한다
+```kotlin
+fun main() {
+    val s = "value"
+
+    println("s = \\"$s\\".")
+    println("""s = "$s".""")
+}
+
+// 출력
+s = "value".
+s = "value".
+```
