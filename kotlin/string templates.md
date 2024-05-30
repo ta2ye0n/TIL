@@ -69,3 +69,35 @@ fun main() {
 s = "value".
 s = "value".
 ```
+
+문자열 리터럴을 사용할 때도 `$`와 `${}`를 사용하여 식의 값을 문자열에 넣을 수 있다
+```kotlin
+// ex)
+fun main() {
+    val a = 10
+    val b = 20
+
+    println("""a = $a, b = $b""")
+    println("""a + b = ${a + b}""")
+}
+
+// 출력
+a = 10, b = 20
+a + b = 30
+```
+
+`문자열 연결(+)`을 통해 문자열에 값을 넣을 수도 있다
+```kotlin
+// ex)
+fun main() {
+    val s = "hi\\n"
+    val n = 11
+    val d = 3.14
+
+    println("first: " + s + "second: " + n + ", third: " + d)
+}
+
+// 출력
+first: hi
+second: 11, third: 3.14
+```
