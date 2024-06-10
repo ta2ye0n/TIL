@@ -78,3 +78,25 @@ AVG(NVL(score,0))
 ```
 
 ---
+### GROUP BY
+```
+SELECT에 그룹함수(= 집계함수)을 사용할 때, 
+특정 조건으로 그룹을 만들어 그룹별로 함수를 사용하여 결과를 출력
+```
+```sql
+SELECT 컬럼명 FROM 테이블명 [WHERE 조건식] GROUP BY 칼럼
+```
+소그룹별 기준을 정한 후, SELECT 절에 깁계 함수를 사용한다
+
+GROUP BY는 SELECT와 달리 `ALIAS`를 사용할 수 없다
+
+---
+### HAVING
+```sql
+SELECT 칼럼명 FROM 테이블명 [WHERE 조건식] [GROUP BY 칼럼] HAVING 그룹조건식
+```
+그룹 함수는 WHERE절에 사용할 수 없다 WHERE절 대신 `HAVING`절을 사용한다
+
+GROUP BY가 없어도 HAVING은 사용할 수 있다.
+
+---
