@@ -100,3 +100,21 @@ SELECT 칼럼명 FROM 테이블명 [WHERE 조건식] [GROUP BY 칼럼] HAVING �
 GROUP BY가 없어도 HAVING은 사용할 수 있다.
 
 ---
+### ROLLUP
+```
+추가적인 집계 정보를 보여주는 함수
+```
+```sql
+SELECT 칼럼명 FROM 테이블명 [WHERE 조건식] GROUP BY ROLLUP(칼럼1, 칼럼2)
+
+-- UNION ALL로 표현
+GROUP BY (칼럼1, 칼럼2)
+UNION ALL
+GROUP BY (칼럼1)
+UNION All
+```
+ROLLUP 절에 명시할 수 있는 표현식에는 그룹핑대상, SELECT 리스트에서 집계함수를 제외한 컬럼의 표현식이 올 수 있다
+
+명시한 표현식 수와 순서에 따라 레벨 별로 집계한 결과가 변환된다
+
+---
