@@ -118,3 +118,23 @@ ROLLUP 절에 명시할 수 있는 표현식에는 그룹핑대상, SELECT 리�
 명시한 표현식 수와 순서에 따라 레벨 별로 집계한 결과가 변환된다
 
 ---
+### CUBE
+```
+결합 가능한 모든 값에 대해서 다차원 집계를 생성하는 함수
+```
+```sql
+SELECT 칼럼명 FROM 테이블명 [WHERE 조건식] GROUP BY CUBE(칼럼1, 칼럼2)
+
+-- UNION ALL로 표현
+GROUP BY (칼럼1, 칼럼2)
+UNION ALL
+GROUP BY (칼럼1)
+UNION ALL
+GROUP BY (칼럼2)
+UNION ALL
+```
+그룹핑 컬럼의 수가 N 개 라면 2의 N승만큼 subtotal을 생성한다
+
+ROLLUP에 비해 연산 대상이 많으므로 주의해야한다
+
+---
